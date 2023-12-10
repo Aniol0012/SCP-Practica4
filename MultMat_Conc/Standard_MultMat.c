@@ -15,10 +15,10 @@ int THREADS = 10;
 typedef struct {
     float **matrixA;
     float **matrixB;
-    float **result;
     int n; // Matrix dimension
     int start_row;
     int end_row;
+    float **result;
 } section_data;
 
 /*
