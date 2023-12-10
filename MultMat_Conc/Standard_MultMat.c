@@ -51,7 +51,8 @@ int get_end_row(int index, int n, int rows_per_section) {
 */
 float **standardMultiplication(float **matrixA, float **matrixB, int n) {
     return standardMultiplication_ijk(matrixA, matrixB, n);
-    //return standardMultiplication_ikj(matrixA,matrixB,n);
+    // return standardMultiplication_ijk_sec(matrixA, matrixB, n);
+    // return standardMultiplication_ikj_sec(matrixA,matrixB,n);
 }
 
 
@@ -83,7 +84,6 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         }
     }
 
-    // Todo: Make join function
     for (i = 0; i < THREADS; i++) {
         if (pthread_join(threads[i], NULL)) {
             perror("Error joining threads");
@@ -98,10 +98,40 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     return result;
 }
 
+
+/*
+* Standard ijk Matrix multiplication with O(n^3) time complexity. (sequential)
+*/
+float **standardMultiplication_ijk_sec(float **matrixA, float **matrixB, int n) {
+    struct timespec start, finish;
+    float **result;
+    int i, j, k;
+
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
+    result = (float **) malloc(n * sizeof(float *));
+    for (i = 0; i < n; i++) {
+        result[i] = (float *) malloc(n * sizeof(float));
+        memset(result[i], 0, n * sizeof(float));
+        for (j = 0; j < n; j++) {
+            for (k = 0; k < n; k++) {
+                result[i][j] = result[i][j] + (matrixA[i][k] * matrixB[k][j]);
+            }
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &finish);
+    elapsed_std = (finish.tv_sec - start.tv_sec);
+    elapsed_std += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+
+    return result;
+}
+
+
 /*
 * Standard ikj Matrix multiplication with O(n^3) time complexity.
 */
-float **standardMultiplication_ikj(float **matrixA, float **matrixB, int n) {
+float **standardMultiplication_ikj_sec(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
     float **result;
     int i, j, k;
