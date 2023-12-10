@@ -1,0 +1,34 @@
+/Users/nando/Library/CloudStorage/Dropbox/Docencia/Grado_Informatica/Sistemas_Concurrentes_y_Paralelos_2023-24/Practicas/Enunciados/Práctica4_Multiplicación_Matrices_C/Versión_Secuencial/MultMat_Sec/cmake-build-debug/MultMat_Test
+[Main] Testing Matrix 4x4 multiplication.
+Standard Multiplication Result:
+    3.71 	   17.59 	   -9.55 	    8.69
+  -14.28 	   -4.50 	   22.93 	  -15.80
+   -4.72 	   -0.60 	    7.29 	    9.67
+   -6.20 	  -25.58 	   11.46 	  -40.43
+[Standard Mult] 4x4 Multiplication time: 0.000001.
+Strassen's Multiplication Result:
+    3.71 	   17.59 	   -9.55 	    8.69
+  -14.28 	   -4.50 	   22.93 	  -15.80
+   -4.72 	   -0.60 	    7.29 	    9.67
+   -6.20 	  -25.58 	   11.46 	  -40.43
+[Strassen Mult] 4x4 Multiplication time: 0.000001.
+[Main] Testing Matrix 16x16 multiplication.
+[Standard Mult] 16x16 Multiplication time: 0.000019.
+[Strassen Mult] 16x16 Multiplication time: 0.000036.
+[Main] Testing Matrix 64x64 multiplication.
+[Standard Mult] 64x64 Multiplication time: 0.001205.
+[Strassen Mult] 64x64 Multiplication time: 0.004311.
+[Main] Testing Matrix 128x128 multiplication.
+[Standard Mult] 128x128 Multiplication time: 0.009493.
+[Strassen Mult] 128x128 Multiplication time: 0.013184.
+[Main] Testing Matrix 512x512 multiplication.
+[Standard Mult] 512x512 Multiplication time: 0.338187.
+[Strassen Mult] 512x512 Multiplication time: 0.275960.
+[Main] Testing Matrix 1024x1024 multiplication.
+[Standard Mult] 1024x1024 Multiplication time: 2.643229.
+[Strassen Mult] 1024x1024 Multiplication time: 1.928109.
+[Main] Testing Matrix 2048x2048 multiplication.
+[Standard Mult] 2048x2048 Multiplication time: 20.931467.
+[Strassen Mult] 2048x2048 Multiplication time: 13.706238.
+
+Process finished with exit code 0
