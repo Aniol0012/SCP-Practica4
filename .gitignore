@@ -61,6 +61,8 @@ cmake-build-debug/
 
 ## Output files for traditional method
 MultMat_Conc/*.std
+MultMat_Conc/Test/*.std
 
 ## Output files for strassen method
 MultMat_Conc/*.str
+MultMat_Conc/Test/*.str
