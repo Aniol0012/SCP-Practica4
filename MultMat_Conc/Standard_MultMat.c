@@ -26,12 +26,12 @@ typedef struct {
  */
 void *process_section(void *arg) {
     // Todo: Try struct *PtrRango -> void *process_section(PtrRango rango){...}
-    section_data *data = (section_data *) arg;
+    section_data *task_data = (section_data *) arg;
     int i, j, k;
-    for (i = data->start_row; i < data->end_row; i++) {
-        for (j = 0; j < data->n; j++) {
-            for (k = 0; k < data->n; k++) {
-                data->result[i][j] += data->matrixA[i][k] * data->matrixB[k][j];
+    for (i = task_data->start_row; i < task_data->end_row; i++) {
+        for (j = 0; j < task_data->n; j++) {
+            for (k = 0; k < task_data->n; k++) {
+                task_data->result[i][j] += task_data->matrixA[i][k] * task_data->matrixB[k][j];
             }
         }
     }
@@ -73,12 +73,18 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         } else {
             section_data[i].end_row = (i + 1) * rows_per_section;
         }
-        pthread_create(&threads[i], NULL, process_section, &section_data[i]);
+        if (pthread_create(&threads[i], NULL, process_section, &section_data[i]) != 0) {
+            perror("Error creating thread number ");
+            exit(1);
+        }
     }
 
     // Todo: Make join function
     for (i = 0; i < THREADS; i++) {
-        pthread_join(threads[i], NULL);
+        if (pthread_join(threads[i], NULL)) {
+            perror("Error joining threads");
+            exit(2);
+        }
     }
 
     clock_gettime(CLOCK_MONOTONIC, &finish);
