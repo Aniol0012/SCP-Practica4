@@ -38,6 +38,14 @@ void *process_section(void *arg) {
     pthread_exit(NULL);
 }
 
+int get_end_row(int index, int n, int rows_per_section) {
+    if (index == THREADS - 1) {
+        return n;
+    } else {
+        return (index + 1) * rows_per_section;
+    }
+}
+
 /*
 * Standard Matrix multiplication with O(n^3) time complexity.
 */
@@ -67,12 +75,8 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         section_data[i].result = result;
         section_data[i].n = n;
         section_data[i].start_row = i * rows_per_section;
-        // Todo: Make get end row function
-        if (i == THREADS - 1) {
-            section_data[i].end_row = n;
-        } else {
-            section_data[i].end_row = (i + 1) * rows_per_section;
-        }
+        section_data[i].end_row = get_end_row(i, n, rows_per_section);
+
         if (pthread_create(&threads[i], NULL, process_section, &section_data[i]) != 0) {
             perror("Error creating thread number ");
             exit(1);
