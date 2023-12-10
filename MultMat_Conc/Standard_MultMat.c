@@ -51,6 +51,7 @@ int get_end_row(int index, int n, int rows_per_section) {
 */
 float **standardMultiplication(float **matrixA, float **matrixB, int n) {
     return standardMultiplication_ijk(matrixA, matrixB, n);
+    // Sequential versions:
     // return standardMultiplication_ijk_sec(matrixA, matrixB, n);
     // return standardMultiplication_ikj_sec(matrixA,matrixB,n);
 }
