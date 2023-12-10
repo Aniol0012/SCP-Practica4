@@ -12,30 +12,28 @@ double elapsed_std;
 /*
 * Standard Matrix multiplication with O(n^3) time complexity.
 */
-float ** standardMultiplication(float ** matrixA,float ** matrixB,int n)
-{
-    return standardMultiplication_ijk(matrixA,matrixB,n);
+float **standardMultiplication(float **matrixA, float **matrixB, int n) {
+    return standardMultiplication_ijk(matrixA, matrixB, n);
     //return standardMultiplication_ikj(matrixA,matrixB,n);
 }
 
 /*
 * Standard ijk Matrix multiplication with O(n^3) time complexity.
 */
-float ** standardMultiplication_ijk(float ** matrixA,float ** matrixB,int n)
-{
+float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
-    float ** result;
-    int i,j,k;
+    float **result;
+    int i, j, k;
 
     clock_gettime(CLOCK_MONOTONIC, &start);
 
-    result = (float**)malloc(n*sizeof(float *));
-    for(i=0;i<n;i++){
-        result[i]=(float*)malloc(n*sizeof(float));
-        memset(result[i],0,n*sizeof(float));
-        for(j=0;j<n;j++){
-            for(k=0;k<n;k++) {
-                result[i][j]=result[i][j]+(matrixA[i][k]*matrixB[k][j]);
+    result = (float **) malloc(n * sizeof(float *));
+    for (i = 0; i < n; i++) {
+        result[i] = (float *) malloc(n * sizeof(float));
+        memset(result[i], 0, n * sizeof(float));
+        for (j = 0; j < n; j++) {
+            for (k = 0; k < n; k++) {
+                result[i][j] = result[i][j] + (matrixA[i][k] * matrixB[k][j]);
             }
         }
     }
@@ -50,21 +48,20 @@ float ** standardMultiplication_ijk(float ** matrixA,float ** matrixB,int n)
 /*
 * Standard ikj Matrix multiplication with O(n^3) time complexity.
 */
-float ** standardMultiplication_ikj(float ** matrixA,float ** matrixB,int n)
-{
+float **standardMultiplication_ikj(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
-    float ** result;
-    int i,j,k;
+    float **result;
+    int i, j, k;
 
     clock_gettime(CLOCK_MONOTONIC, &start);
 
-    result = (float**)malloc(n*sizeof(float *));
-    for(i=0;i<n;i++){
-        result[i]=(float*)malloc(n*sizeof(float));
-        memset(result[i],0,n*sizeof(float));
-        for(k=0;k<n;k++) {
-            for(j=0;j<n;j++){
-                result[i][j]=result[i][j]+(matrixA[i][k]*matrixB[k][j]);
+    result = (float **) malloc(n * sizeof(float *));
+    for (i = 0; i < n; i++) {
+        result[i] = (float *) malloc(n * sizeof(float));
+        memset(result[i], 0, n * sizeof(float));
+        for (k = 0; k < n; k++) {
+            for (j = 0; j < n; j++) {
+                result[i][j] = result[i][j] + (matrixA[i][k] * matrixB[k][j]);
             }
         }
     }

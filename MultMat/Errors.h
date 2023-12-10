@@ -21,7 +21,9 @@ extern char *COLOR_RESET;
 
 // Functions Prototypes
 void Error(char *msg);
+
 void printMessage(char *msg, char *color);
+
 void print(char *msg);
 
 #endif //MULTMAT_SEC3_ERRORS_H
