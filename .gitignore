@@ -56,3 +56,11 @@ dkms.conf
 *.iml
 .DS_Store
 cmake-build-debug/
+
+# MatrixMultiplication
+
+## Output files for traditional method
+MultMat_Conc/*.std
+
+## Output files for strassen method
+MultMat_Conc/*.str
