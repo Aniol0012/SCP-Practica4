@@ -1,3 +1,11 @@
+/* ---------------------------------------------------------------
+Práctica 4.
+Código fuente: Standard_MultMat.c
+Grau Informàtica
+48056540H - Aleix Segura Paz.
+21161168H - Aniol Serrano Ortega.
+--------------------------------------------------------------- */
+
 //
 // Created by Fernando Cores Prado on 4/12/23.
 //
