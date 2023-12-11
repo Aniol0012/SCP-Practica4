@@ -24,9 +24,8 @@ typedef struct {
 /*
  * Auxiliary function to process a section of the matrix multiplication.
  */
-void *process_section(void *arg) {
-    // Todo: Try struct *PtrRango -> void *process_section(PtrRango rango){...}
-    section_data *task_data = (section_data *) arg;
+int *process_section(section_data *section_data_thread) {
+    section_data *task_data = section_data_thread;
     int i, j, k;
     for (i = task_data->start_row; i < task_data->end_row; i++) {
         for (j = 0; j < task_data->n; j++) {
@@ -36,6 +35,7 @@ void *process_section(void *arg) {
         }
     }
     pthread_exit(NULL);
+    return (NULL);
 }
 
 int get_end_row(int index, int n, int rows_per_section) {
@@ -79,7 +79,7 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         section_data[i].start_row = i * rows_per_section;
         section_data[i].end_row = get_end_row(i, n, rows_per_section);
 
-        if (pthread_create(&threads[i], NULL, process_section, &section_data[i]) != 0) {
+        if (pthread_create(&threads[i], NULL, (void *(*)(void *)) process_section, &section_data[i]) != 0) {
             perror("Error creating thread number ");
             exit(1);
         }
