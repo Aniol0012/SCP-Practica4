@@ -12,10 +12,19 @@
 double elapsed_std;
 int THREADS = 10;
 
+/*
+ * Struct to store the data of a section of the matrix multiplication.
+ * @var float** matrixA: First matrix.
+ * @var float** matrixB: Second matrix.
+ * @var int n: Matrix dimension.
+ * @var int start_row: Start row of the section.
+ * @var int end_row: End row of the section.
+ * @var float** result: Result matrix.
+ */
 typedef struct {
     float **matrixA;
     float **matrixB;
-    int n; // Matrix dimension
+    int n;
     int start_row;
     int end_row;
     float **result;
@@ -38,6 +47,9 @@ int *process_section(section_data *section_data_thread) {
     return (NULL);
 }
 
+/*
+ * Auxiliary function to get the end row of a section.
+ */
 int get_end_row(int index, int n, int rows_per_section) {
     if (index == THREADS - 1) {
         return n;
