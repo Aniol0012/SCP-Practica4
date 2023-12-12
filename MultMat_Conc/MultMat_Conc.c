@@ -21,6 +21,7 @@ Grau Informàtica
 
 // Constants
 #define DEBUG 0
+// Todo: Change THREADS as parameter
 char *usage_msg = "Usage: Strassen_Sec <MatrixA_File> <MatrixB_File> <ResultMatrix_File>\n       or\n       Strassen_Sec <Matrix_size> <Matrix_RootFolder>";
 char *input_folder = "Input";
 char *results_folder = "Results";
