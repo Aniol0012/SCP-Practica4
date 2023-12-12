@@ -15,6 +15,7 @@ Grau Informàtica
 #include <memory.h>
 #include "Standard_MultMat.h"
 #include "Matrix.h"
+#include "Errors.h"
 #include <pthread.h>
 
 double elapsed_std;
@@ -100,15 +101,15 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         section_data[i].end_row = get_end_row(i, n, rows_per_section);
 
         if (pthread_create(&threads[i], NULL, (void *(*)(void *)) process_section, &section_data[i]) != 0) {
-            perror("Error creating thread number ");
-            exit(1);
+            Error("Error creating threads");
+            //exit(1);
         }
     }
 
     for (i = 0; i < THREADS; i++) {
         if (pthread_join(threads[i], NULL)) {
-            perror("Error joining threads");
-            exit(2);
+            Error("Error joining threads");
+            //exit(2);
         }
     }
 
