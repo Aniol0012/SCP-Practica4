@@ -19,7 +19,7 @@ Grau Informàtica
 #include <pthread.h>
 
 double elapsed_std;
-int THREADS = 10;
+int THREADS;
 
 /*
  * Struct to store the data of a section of the matrix multiplication.
@@ -42,7 +42,7 @@ typedef struct {
 /*
  * Auxiliary function to process a section of the matrix multiplication.
  */
-int *process_section(section_data *section_data_thread) {
+void *process_section(section_data *section_data_thread) {
     section_data *task_data = section_data_thread;
     int i, j, k;
     for (i = task_data->start_row; i < task_data->end_row; i++) {
@@ -53,7 +53,6 @@ int *process_section(section_data *section_data_thread) {
         }
     }
     pthread_exit(NULL);
-    return (NULL);
 }
 
 /*
@@ -100,16 +99,14 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         section_data[i].start_row = i * rows_per_section;
         section_data[i].end_row = get_end_row(i, n, rows_per_section);
 
-        if (pthread_create(&threads[i], NULL, (void *(*)(void *)) process_section, &section_data[i]) != 0) {
+        if (pthread_create(&threads[i], NULL, (void *) process_section, &section_data[i]) != 0) {
             Error("Error creating threads");
-            //exit(1);
         }
     }
 
     for (i = 0; i < THREADS; i++) {
         if (pthread_join(threads[i], NULL)) {
             Error("Error joining threads");
-            //exit(2);
         }
     }
 
