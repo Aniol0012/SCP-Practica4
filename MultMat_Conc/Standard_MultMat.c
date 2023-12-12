@@ -100,17 +100,25 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         section_data[i].end_row = get_end_row(i, n, rows_per_section);
 
         if (pthread_create(&threads[i], NULL, (void *) process_section, &section_data[i]) != 0) {
+            // Todo: Auxiliary function to cancel all threads.
+            for (i = 0; i < THREADS; i++) {
+                if (pthread_cancel(threads[i])) {
+                    Error("Error canceling threads");
+                }
+            }
             Error("Error creating threads");
         }
     }
-    // Todo: In case of error, we should free the memory allocated for the threads canceling them all.
 
     for (i = 0; i < THREADS; i++) {
         if (pthread_join(threads[i], NULL)) {
+            // Todo: Auxiliary function to cancel all threads.
+            if (pthread_cancel(threads[i])) {
+                Error("Error canceling threads");
+            }
             Error("Error joining threads");
         }
     }
-    // Todo: In case of error in join, we should free the memory allocated for the threads canceling them all.
 
     clock_gettime(CLOCK_MONOTONIC, &finish);
     elapsed_std = (finish.tv_sec - start.tv_sec);
