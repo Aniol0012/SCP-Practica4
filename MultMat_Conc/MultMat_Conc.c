@@ -21,6 +21,7 @@ Grau Informàtica
 
 // Constants
 #define DEBUG 0
+#define DEFAULT_THREADS 4
 char *usage_msg = "Usage: MultMat_Conc <MatrixA_File> <MatrixB_File> <ResultMatrix_File>\n       or\n       Strassen_Sec <Matrix_size> <Matrix_RootFolder>\n    or\n       Strassen_Sec <Matrix_size> <Matrix_RootFolder> <Threads>\n";
 char *input_folder = "Input";
 char *results_folder = "Results";
@@ -29,7 +30,7 @@ char *results_folder = "Results";
 char debug_msg[256];
 struct timespec start, finish;
 double elapsed;
-int THREADS = 4;
+int threads = DEFAULT_THREADS;
 
 /*
 * Main function where the execution starts.
@@ -46,12 +47,12 @@ int main(int argc, char **argv) {
         printMessage(debug_msg, COLOR_MAGENTA);
     }
 
-    THREADS = atoi(argv[argc - 1]);
+    threads = atoi(argv[argc - 1]);
 
-    if (THREADS < 1) {
+    if (threads < 1) {
         Error("[Main] Error: Invalid number of threads!");
     } else if (DEBUG) {
-        sprintf(debug_msg, "[Main] Number of threads: %d.\n", THREADS);
+        sprintf(debug_msg, "[Main] Number of threads: %d.\n", threads);
         printMessage(debug_msg, COLOR_GREEN);
     }
 

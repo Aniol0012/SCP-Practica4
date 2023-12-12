@@ -19,7 +19,7 @@ Grau Informàtica
 #include <pthread.h>
 
 double elapsed_std;
-int THREADS;
+int threads;
 
 /*
  * Struct to store the data of a section of the matrix multiplication.
@@ -59,7 +59,7 @@ void *process_section(section_data *section_data_thread) {
  * Auxiliary function to get the end row of a section.
  */
 int get_end_row(int index, int n, int rows_per_section) {
-    if (index == THREADS - 1) {
+    if (index == threads - 1) {
         return n;
     } else {
         return (index + 1) * rows_per_section;
@@ -83,15 +83,15 @@ float **standardMultiplication(float **matrixA, float **matrixB, int n) {
 float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
     float **result = createZeroMatrix(n);
-    pthread_t threads[THREADS];
-    section_data section_data[THREADS];
+    pthread_t threads[threads];
+    section_data section_data[threads];
 
-    int rows_per_section = n / THREADS;
+    int rows_per_section = n / threads;
     int i;
 
     clock_gettime(CLOCK_MONOTONIC, &start);
 
-    for (i = 0; i < THREADS; i++) {
+    for (i = 0; i < threads; i++) {
         section_data[i].matrixA = matrixA;
         section_data[i].matrixB = matrixB;
         section_data[i].result = result;
@@ -101,7 +101,7 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
 
         if (pthread_create(&threads[i], NULL, (void *) process_section, &section_data[i]) != 0) {
             // Todo: Auxiliary function to cancel all threads.
-            for (i = 0; i < THREADS; i++) {
+            for (i = 0; i < threads; i++) {
                 if (pthread_cancel(threads[i])) {
                     Error("Error canceling threads");
                 }
@@ -110,7 +110,7 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         }
     }
 
-    for (i = 0; i < THREADS; i++) {
+    for (i = 0; i < threads; i++) {
         if (pthread_join(threads[i], NULL)) {
             // Todo: Auxiliary function to cancel all threads.
             if (pthread_cancel(threads[i])) {

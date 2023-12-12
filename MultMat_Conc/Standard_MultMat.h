@@ -14,7 +14,7 @@ Grau Informàtica
 #define MULTMAT_SEC3_STANDARD_MULTMAT_H
 
 extern double elapsed_std;
-extern int THREADS;
+extern int threads;
 
 float **standardMultiplication(float **matrixA, float **matrixB, int n);
 
