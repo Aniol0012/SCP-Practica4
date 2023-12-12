@@ -103,12 +103,14 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
             Error("Error creating threads");
         }
     }
+    // Todo: In case of error, we should free the memory allocated for the threads canceling them all.
 
     for (i = 0; i < THREADS; i++) {
         if (pthread_join(threads[i], NULL)) {
             Error("Error joining threads");
         }
     }
+    // Todo: In case of error in join, we should free the memory allocated for the threads canceling them all.
 
     clock_gettime(CLOCK_MONOTONIC, &finish);
     elapsed_std = (finish.tv_sec - start.tv_sec);

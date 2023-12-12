@@ -14,6 +14,8 @@ Grau Informàtica
 #include <time.h>
 #include <stdlib.h>
 #include "Matrix.h"
+#include "Errors.h"
+#include <pthread.h>
 
 double elapsed_str;
 int Dim2StopRecursivity = 10;
