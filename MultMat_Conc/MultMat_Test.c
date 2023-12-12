@@ -63,7 +63,7 @@ void DoMatrixMultiplication(int n) {
     sprintf(matrixB_name, "%s/%s/MatrixB_%dx%d.txt", input_path, input_folder, n, n);
     openMatrix(matrixB_name, &matrixB, &n2);
     if (n1 != n2)
-        Error("[Main]: Error input matrices have differente dimensions!");
+        Error("[Main]: Error input matrices have different dimensions!");
     n = n1;
 
     int pow = 1;

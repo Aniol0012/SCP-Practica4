@@ -6,6 +6,7 @@
 #define MULTMAT_SEC3_STANDARD_MULTMAT_H
 
 extern double elapsed_std;
+extern int THREADS;
 
 float **standardMultiplication(float **matrixA, float **matrixB, int n);
 
