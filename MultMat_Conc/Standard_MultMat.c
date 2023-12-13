@@ -83,7 +83,7 @@ float **standardMultiplication(float **matrixA, float **matrixB, int n) {
 float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
     float **result = createZeroMatrix(n);
-    pthread_t threads[threads];
+    pthread_t threads_list[threads];
     section_data section_data[threads];
 
     int rows_per_section = n / threads;
@@ -99,10 +99,10 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         section_data[i].start_row = i * rows_per_section;
         section_data[i].end_row = get_end_row(i, n, rows_per_section);
 
-        if (pthread_create(&threads[i], NULL, (void *) process_section, &section_data[i]) != 0) {
+        if (pthread_create(&threads_list[i], NULL, (void *) process_section, &section_data[i]) != 0) {
             // Todo: Auxiliary function to cancel all threads.
             for (i = 0; i < threads; i++) {
-                if (pthread_cancel(threads[i])) {
+                if (pthread_cancel(threads_list[i])) {
                     Error("Error canceling threads");
                 }
             }
@@ -111,9 +111,9 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     }
 
     for (i = 0; i < threads; i++) {
-        if (pthread_join(threads[i], NULL)) {
+        if (pthread_join(threads_list[i], NULL)) {
             // Todo: Auxiliary function to cancel all threads.
-            if (pthread_cancel(threads[i])) {
+            if (pthread_cancel(threads_list[i])) {
                 Error("Error canceling threads");
             }
             Error("Error joining threads");
