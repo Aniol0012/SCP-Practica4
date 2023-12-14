@@ -19,6 +19,30 @@ Grau Informàtica
 
 double elapsed_str;
 int Dim2StopRecursivity = 10;
+extern int threads;
+
+typedef struct {
+    float **matrixA;
+    float **matrixB;
+    int n;
+} ThreadArgs;
+
+/*
+ * Auxiliary function to cancel all threads.
+ */
+void cancel_threads(pthread_t *threads_list, int threads_created) {
+    for (int i = 0; i < threads_created; i++) {
+        if (pthread_cancel(threads_list[i])) {
+            Error("Error canceling threads (creation)");
+        }
+    }
+}
+
+void *threadFunction(void *arg) {
+    ThreadArgs *args = (ThreadArgs *)arg;
+    float **result = strassensMultRec(args->matrixA, args->matrixB, args->n);
+    return (void *)result;
+}
 
 
 /*
@@ -55,6 +79,21 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
         float **b12 = divide(matrixB, n, 0, n / 2);
         float **b21 = divide(matrixB, n, n / 2, 0);
         float **b22 = divide(matrixB, n, n / 2, n / 2);
+
+        pthread_t threads_list[threads];
+        ThreadArgs args[threads];
+        float **m[7];
+        int threads_per_matrix = threads / 7;
+
+        for (int i = 0; i < 7; i++) {
+            args[i].n = n / 2;
+            args[i].matrixA = a11;
+            args[i].matrixB = b11;
+            if (pthread_create(&threads_list[i], NULL, threadFunction, &args[i]) != 0) {
+                cancel_threads(threads_list, i);
+                Error("Error creating threads");
+            }
+        }
 
         //Recursive call for Divide and Conquer
         float **m1 = strassensMultRec(addMatrix(a11, a22, n / 2), addMatrix(b11, b22, n / 2), n / 2);
