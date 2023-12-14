@@ -16,7 +16,6 @@ Grau Informàtica
 
 extern double elapsed_str;
 
-
 // Functions Prototypes
 float **strassensMultiplication(float **, float **, int);
 

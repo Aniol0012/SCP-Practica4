@@ -20,7 +20,7 @@ Grau Informàtica
 #include "Errors.h"
 
 // Constants
-#define DEBUG 0
+#define DEBUG 1
 #define DEFAULT_THREADS 4
 char *usage_msg = "Usage: MultMat_Conc <MatrixA_File> <MatrixB_File> <ResultMatrix_File>\n       or\n       Strassen_Sec <Matrix_size> <Matrix_RootFolder>\n    or\n       Strassen_Sec <Matrix_size> <Matrix_RootFolder> <Threads>\n";
 char *input_folder = "Input";
@@ -42,17 +42,16 @@ int main(int argc, char **argv) {
     float **matrixA, **matrixB;
     float **standardRes, **strassenRes;
 
-    if (DEBUG) {
-        sprintf(debug_msg, "[Main] Start Program with %d parameters.\n", argc);
-        printMessage(debug_msg, COLOR_MAGENTA);
-    }
-
-    threads = atoi(argv[argc - 1]);
+    threads = atoi(argv[4]);
 
     if (threads < 1) {
         threads = DEFAULT_THREADS;
-    } else if (DEBUG) {
-        sprintf(debug_msg, "[Main] Number of threads2: %d.\n", threads);
+    }
+
+    if (DEBUG) {
+        sprintf(debug_msg, "[Main] Start Program with %d parameters.\n", argc);
+        printMessage(debug_msg, COLOR_MAGENTA);
+        sprintf(debug_msg, "[Main] Number of threads: %d.\n", threads);
         printMessage(debug_msg, COLOR_GREEN);
     }
 
@@ -81,7 +80,7 @@ int main(int argc, char **argv) {
         matrixB_name = random_matrixB_name;
         sprintf(std_result_matrix_name, "%s/%s/MatrixRes_%dx%d.txt.std", argv[2], results_folder, n, n);
         sprintf(str_result_matrix_name, "%s/%s/MatrixRes_%dx%d.txt.str", argv[2], results_folder, n, n);
-    } else if (argc == 4) {
+    } else if (argc == 4 || argc == 5) {
         int n1, n2;
         double int_part;
         openMatrix(argv[1], &matrixA, &n1);

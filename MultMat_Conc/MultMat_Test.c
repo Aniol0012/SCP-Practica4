@@ -19,13 +19,15 @@ Grau Informàtica
 #include "Errors.h"
 
 // Constants
-#define DEBUG 0
+#define DEBUG 1
+#define DEFAULT_THREADS 4
 char *input_path = ".";
 char *input_folder = "Input";
 char *results_path = ".";
 char *results_folder = "Results";
 char *tests_path = ".";
 char *tests_folder = "Test";
+int threads = DEFAULT_THREADS;
 
 // Functions Prototypes
 void DoMatrixMultiplication(int n);
@@ -56,6 +58,11 @@ void DoMatrixMultiplication(int n) {
 
     sprintf(debug_msg, "[Main] Testing Matrix %dx%d multiplication.\n", n, n);
     printMessage(debug_msg, COLOR_CYAN);
+
+    if (DEBUG) {
+        sprintf(debug_msg, "[Main] Number of threads: %d.\n", threads);
+        printMessage(debug_msg, COLOR_GREEN);
+    }
 
     // Read input matrices.
     sprintf(matrixA_name, "%s/%s/MatrixA_%dx%d.txt", input_path, input_folder, n, n);
