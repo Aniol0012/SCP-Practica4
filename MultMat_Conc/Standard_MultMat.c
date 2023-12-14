@@ -19,7 +19,7 @@ Grau Informàtica
 #include <pthread.h>
 
 double elapsed_std;
-int threads;
+int threads2 = 4;
 
 /*
  * Struct to store the data of a section of the matrix multiplication.
@@ -59,7 +59,7 @@ void *process_section(section_data *section_data_thread) {
  * Auxiliary function to get the end row of a section.
  */
 int get_end_row(int index, int n, int rows_per_section) {
-    if (index == threads - 1) {
+    if (index == threads2 - 1) {
         return n;
     } else {
         return (index + 1) * rows_per_section;
@@ -83,15 +83,15 @@ float **standardMultiplication(float **matrixA, float **matrixB, int n) {
 float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
     float **result = createZeroMatrix(n);
-    pthread_t threads_list[threads];
-    section_data section_data[threads];
+    pthread_t threads_list[threads2];
+    section_data section_data[threads2];
 
-    int rows_per_section = n / threads;
+    int rows_per_section = n / threads2;
     int i;
 
     clock_gettime(CLOCK_MONOTONIC, &start);
 
-    for (i = 0; i < threads; i++) {
+    for (i = 0; i < threads2; i++) {
         section_data[i].matrixA = matrixA;
         section_data[i].matrixB = matrixB;
         section_data[i].result = result;
@@ -100,23 +100,23 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         section_data[i].end_row = get_end_row(i, n, rows_per_section);
 
         if (pthread_create(&threads_list[i], NULL, (void *) process_section, &section_data[i]) != 0) {
-            // Todo: Auxiliary function to cancel all threads.
-            for (i = 0; i < threads; i++) {
+            // Todo: Auxiliary function to cancel all threads2.
+            for (i = 0; i < threads2; i++) {
                 if (pthread_cancel(threads_list[i])) {
-                    Error("Error canceling threads");
+                    Error("Error canceling threads2");
                 }
             }
-            Error("Error creating threads");
+            Error("Error creating threads2");
         }
     }
 
-    for (i = 0; i < threads; i++) {
+    for (i = 0; i < threads2; i++) {
         if (pthread_join(threads_list[i], NULL)) {
-            // Todo: Auxiliary function to cancel all threads.
+            // Todo: Auxiliary function to cancel all threads2.
             if (pthread_cancel(threads_list[i])) {
-                Error("Error canceling threads");
+                Error("Error canceling threads2");
             }
-            Error("Error joining threads");
+            Error("Error joining threads2");
         }
     }
 

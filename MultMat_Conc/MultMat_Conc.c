@@ -50,9 +50,9 @@ int main(int argc, char **argv) {
     threads = atoi(argv[argc - 1]);
 
     if (threads < 1) {
-        Error("[Main] Error: Invalid number of threads!");
+        threads = DEFAULT_THREADS;
     } else if (DEBUG) {
-        sprintf(debug_msg, "[Main] Number of threads: %d.\n", threads);
+        sprintf(debug_msg, "[Main] Number of threads2: %d.\n", threads);
         printMessage(debug_msg, COLOR_GREEN);
     }
 
