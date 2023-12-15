@@ -25,7 +25,7 @@ typedef struct {
     float **matrixA;
     float **matrixB;
     int n;
-} ThreadArgs;
+} section_data;
 
 /*
  * Auxiliary function to cancel all threads.
@@ -38,9 +38,13 @@ void cancel_threads(pthread_t *threads_list, int threads_created) {
     }
 }
 
-void *threadFunction(void *arg) {
-    ThreadArgs *args = (ThreadArgs *)arg;
-    float **result = strassensMultRec(args->matrixA, args->matrixB, args->n);
+void *proces_section(section_data *section_data_thread) {
+    section_data *args = section_data_thread;
+    int n = (args->n) / 2;
+    float **matrixA = addMatrix(args->matrixA, args->matrixB, n);
+    float **matrixB = addMatrix(args->matrixA, args->matrixB, n);
+    // Todo: passar-li les dues n i les dos matrix
+    float **result = strassensMultRec(matrixA, matrixB, n);
     return (void *)result;
 }
 
@@ -81,7 +85,7 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
         float **b22 = divide(matrixB, n, n / 2, n / 2);
 
         pthread_t threads_list[threads];
-        ThreadArgs args[threads];
+        section_data args[threads];
         float **m[7];
         int threads_per_matrix = threads / 7;
 
@@ -89,7 +93,7 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
             args[i].n = n / 2;
             args[i].matrixA = a11;
             args[i].matrixB = b11;
-            if (pthread_create(&threads_list[i], NULL, threadFunction, &args[i]) != 0) {
+            if (pthread_create(&threads_list[i], NULL, (void *) proces_section, &args[i]) != 0) {
                 cancel_threads(threads_list, i);
                 Error("Error creating threads");
             }
