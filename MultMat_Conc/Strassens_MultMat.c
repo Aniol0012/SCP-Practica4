@@ -43,13 +43,6 @@ void cancel_threads_strassens(pthread_t *threads_list, int threads_created) {
     }
 }
 
-float **freeMatrix(float **matrix, int n) {
-    for (int i = 0; i < n; i++) {
-        free(matrix[i]);
-    }
-    free(matrix);
-}
-
 void *proces_section(void *section_data_thread) {
     section_data *data = (section_data *) section_data_thread;
     data->result = strassensMultRec(data->matrixA, data->matrixB, data->n);
