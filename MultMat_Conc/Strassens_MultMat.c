@@ -25,12 +25,16 @@ typedef struct {
     float **matrixA;
     float **matrixB;
     int n;
+    float **result;
 } section_data;
+
+void set_args(section_data *args, float **a11, float **a12, float **a21, float **a22, float **b11, float **b12, float **b21,
+         float **b22, int n);
 
 /*
  * Auxiliary function to cancel all threads.
  */
-void cancel_threads(pthread_t *threads_list, int threads_created) {
+void cancel_threads_strassens(pthread_t *threads_list, int threads_created) {
     for (int i = 0; i < threads_created; i++) {
         if (pthread_cancel(threads_list[i])) {
             Error("Error canceling threads (creation)");
@@ -38,16 +42,19 @@ void cancel_threads(pthread_t *threads_list, int threads_created) {
     }
 }
 
-void *proces_section(section_data *section_data_thread) {
-    section_data *args = section_data_thread;
-    int n = (args->n) / 2;
-    float **matrixA = addMatrix(args->matrixA, args->matrixB, n);
-    float **matrixB = addMatrix(args->matrixA, args->matrixB, n);
-    // Todo: passar-li les dues n i les dos matrix
-    float **result = strassensMultRec(matrixA, matrixB, n);
-    return (void *)result;
+
+void *proces_section(void *section_data_thread) {
+    section_data *args = (section_data *) section_data_thread;
+    args->result = strassensMultRec(args->matrixA, args->matrixB, args->n);
+    return NULL;
 }
 
+float **freeMatrix(float **matrix, int n) {
+    for (int i = 0; i < n; i++) {
+        free(matrix[i]);
+    }
+    free(matrix);
+}
 
 /*
 * Wrapper function over strassensMultRec.
@@ -84,29 +91,43 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
         float **b21 = divide(matrixB, n, n / 2, 0);
         float **b22 = divide(matrixB, n, n / 2, n / 2);
 
-        pthread_t threads_list[threads];
-        section_data args[threads];
-        float **m[7];
-        int threads_per_matrix = threads / 7;
+        pthread_t threads_list[7];
+        section_data args[7];
+
+        set_args(args, a11, a12, a21, a22, b11, b12, b21, b22, n);
 
         for (int i = 0; i < 7; i++) {
-            args[i].n = n / 2;
-            args[i].matrixA = a11;
-            args[i].matrixB = b11;
             if (pthread_create(&threads_list[i], NULL, (void *) proces_section, &args[i]) != 0) {
-                cancel_threads(threads_list, i);
+                cancel_threads_strassens(threads_list, i);
                 Error("Error creating threads");
             }
         }
 
-        //Recursive call for Divide and Conquer
-        float **m1 = strassensMultRec(addMatrix(a11, a22, n / 2), addMatrix(b11, b22, n / 2), n / 2);
-        float **m2 = strassensMultRec(addMatrix(a21, a22, n / 2), b11, n / 2);
-        float **m3 = strassensMultRec(a11, subMatrix(b12, b22, n / 2), n / 2);
-        float **m4 = strassensMultRec(a22, subMatrix(b21, b11, n / 2), n / 2);
-        float **m5 = strassensMultRec(addMatrix(a11, a12, n / 2), b22, n / 2);
-        float **m6 = strassensMultRec(subMatrix(a21, a11, n / 2), addMatrix(b11, b12, n / 2), n / 2);
-        float **m7 = strassensMultRec(subMatrix(a12, a22, n / 2), addMatrix(b21, b22, n / 2), n / 2);
+        for (int i = 0; i < 7; ++i) {
+            if (pthread_join(threads_list[i], NULL)) {
+                if (pthread_cancel(threads_list[i])) {
+                    Error("Error canceling threads (join)");
+                }
+                Error("Error joining threads");
+            }
+        }
+
+        float **m1 = args[0].result;
+        float **m2 = args[1].result;
+        float **m3 = args[2].result;
+        float **m4 = args[3].result;
+        float **m5 = args[4].result;
+        float **m6 = args[5].result;
+        float **m7 = args[6].result;
+
+        // Free memory of the results and temporary matrices
+        for (int i = 0; i < 7; i++) {
+            freeMatrix(args[i].matrixA, n / 2);
+            freeMatrix(args[i].matrixB, n / 2);
+            freeMatrix(args[i].result, n / 2);
+        }
+
+
         free(a11);
         free(a12);
         free(a21);
@@ -204,5 +225,44 @@ float **subMatrix(float **matrixA, float **matrixB, int n) {
             res[i][j] = matrixA[i][j] - matrixB[i][j];
 
     return res;
+}
+
+void
+set_args(section_data *args, float **a11, float **a12, float **a21, float **a22, float **b11, float **b12, float **b21,
+         float **b22, int n) {
+    // m1
+    args[0].matrixA = addMatrix(a11, a22, n / 2);
+    args[0].matrixB = addMatrix(b11, b22, n / 2);
+    args[0].n = n / 2;
+
+    // m2
+    args[1].matrixA = addMatrix(a21, a22, n / 2);
+    args[1].matrixB = b11;
+    args[1].n = n / 2;
+
+    // m3
+    args[2].matrixA = a11;
+    args[2].matrixB = subMatrix(b12, b22, n / 2);
+    args[2].n = n / 2;
+
+    // m4
+    args[3].matrixA = a22;
+    args[3].matrixB = subMatrix(b21, b11, n / 2);
+    args[3].n = n / 2;
+
+    // m5
+    args[4].matrixA = addMatrix(a11, a12, n / 2);
+    args[4].matrixB = b22;
+    args[4].n = n / 2;
+
+    // m6
+    args[5].matrixA = subMatrix(a21, a11, n / 2);
+    args[5].matrixB = addMatrix(b11, b12, n / 2);
+    args[5].n = n / 2;
+
+    // m7
+    args[6].matrixA = subMatrix(a12, a22, n / 2);
+    args[6].matrixB = addMatrix(b21, b22, n / 2);
+    args[6].n = n / 2;
 }
 
