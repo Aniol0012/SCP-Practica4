@@ -95,40 +95,7 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
         float **b21 = divide(matrixB, n, n / 2, 0);
         float **b22 = divide(matrixB, n, n / 2, n / 2);
 
-        // m1
-        args[0].matrixA = addMatrix(a11, a22, n / 2);
-        args[0].matrixB = addMatrix(b11, b22, n / 2);
-        args[0].n = n / 2;
-
-        // m2
-        args[1].matrixA = addMatrix(a21, a22, n / 2);
-        args[1].matrixB = b11;
-        args[1].n = n / 2;
-
-        // m3
-        args[2].matrixA = a11;
-        args[2].matrixB = subMatrix(b12, b22, n / 2);
-        args[2].n = n / 2;
-
-        // m4
-        args[3].matrixA = a22;
-        args[3].matrixB = subMatrix(b21, b11, n / 2);
-        args[3].n = n / 2;
-
-        // m5
-        args[4].matrixA = addMatrix(a11, a12, n / 2);
-        args[4].matrixB = b22;
-        args[4].n = n / 2;
-
-        // m6
-        args[5].matrixA = subMatrix(a21, a11, n / 2);
-        args[5].matrixB = addMatrix(b11, b12, n / 2);
-        args[5].n = n / 2;
-
-        // m7
-        args[6].matrixA = subMatrix(a12, a22, n / 2);
-        args[6].matrixB = addMatrix(b21, b22, n / 2);
-        args[6].n = n / 2;
+        set_args(args, a11, a12, a21, a22, b11, b12, b21, b22, n);
 
         for (int i = 0; i < 7; i++) {
             if (pthread_create(&threads_list[i], NULL, proces_section, (void *) &args[i]) != 0) {
