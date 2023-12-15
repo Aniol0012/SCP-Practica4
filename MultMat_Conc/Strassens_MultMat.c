@@ -28,7 +28,8 @@ typedef struct {
     float **result;
 } section_data;
 
-void set_args(section_data *args, float **a11, float **a12, float **a21, float **a22, float **b11, float **b12, float **b21,
+void
+set_args(section_data *args, float **a11, float **a12, float **a21, float **a22, float **b11, float **b12, float **b21,
          float **b22, int n);
 
 /*
@@ -42,19 +43,19 @@ void cancel_threads_strassens(pthread_t *threads_list, int threads_created) {
     }
 }
 
-
-void *proces_section(void *section_data_thread) {
-    section_data *args = (section_data *) section_data_thread;
-    args->result = strassensMultRec(args->matrixA, args->matrixB, args->n);
-    return NULL;
-}
-
 float **freeMatrix(float **matrix, int n) {
     for (int i = 0; i < n; i++) {
         free(matrix[i]);
     }
     free(matrix);
 }
+
+void *proces_section(void *section_data_thread) {
+    section_data *data = (section_data *) section_data_thread;
+    data->result = strassensMultRec(data->matrixA, data->matrixB, data->n);
+    return NULL;
+}
+
 
 /*
 * Wrapper function over strassensMultRec.
@@ -81,6 +82,9 @@ float **strassensMultiplication(float **matrixA, float **matrixB, int n) {
 float **strassensMultRec(float **matrixA, float **matrixB, int n) {
     float **result = createZeroMatrix(n);
     if (n > Dim2StopRecursivity) {
+        pthread_t threads_list[7];
+        section_data args[7];
+
         //Divide the matrix
         float **a11 = divide(matrixA, n, 0, 0);
         float **a12 = divide(matrixA, n, 0, (n / 2));
@@ -91,13 +95,43 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
         float **b21 = divide(matrixB, n, n / 2, 0);
         float **b22 = divide(matrixB, n, n / 2, n / 2);
 
-        pthread_t threads_list[7];
-        section_data args[7];
+        // m1
+        args[0].matrixA = addMatrix(a11, a22, n / 2);
+        args[0].matrixB = addMatrix(b11, b22, n / 2);
+        args[0].n = n / 2;
 
-        set_args(args, a11, a12, a21, a22, b11, b12, b21, b22, n);
+        // m2
+        args[1].matrixA = addMatrix(a21, a22, n / 2);
+        args[1].matrixB = b11;
+        args[1].n = n / 2;
+
+        // m3
+        args[2].matrixA = a11;
+        args[2].matrixB = subMatrix(b12, b22, n / 2);
+        args[2].n = n / 2;
+
+        // m4
+        args[3].matrixA = a22;
+        args[3].matrixB = subMatrix(b21, b11, n / 2);
+        args[3].n = n / 2;
+
+        // m5
+        args[4].matrixA = addMatrix(a11, a12, n / 2);
+        args[4].matrixB = b22;
+        args[4].n = n / 2;
+
+        // m6
+        args[5].matrixA = subMatrix(a21, a11, n / 2);
+        args[5].matrixB = addMatrix(b11, b12, n / 2);
+        args[5].n = n / 2;
+
+        // m7
+        args[6].matrixA = subMatrix(a12, a22, n / 2);
+        args[6].matrixB = addMatrix(b21, b22, n / 2);
+        args[6].n = n / 2;
 
         for (int i = 0; i < 7; i++) {
-            if (pthread_create(&threads_list[i], NULL, (void *) proces_section, &args[i]) != 0) {
+            if (pthread_create(&threads_list[i], NULL, proces_section, (void *) &args[i]) != 0) {
                 cancel_threads_strassens(threads_list, i);
                 Error("Error creating threads");
             }
@@ -120,13 +154,16 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
         float **m6 = args[5].result;
         float **m7 = args[6].result;
 
-        // Free memory of the results and temporary matrices
         for (int i = 0; i < 7; i++) {
-            freeMatrix(args[i].matrixA, n / 2);
-            freeMatrix(args[i].matrixB, n / 2);
-            freeMatrix(args[i].result, n / 2);
+            result = args[i].result;
         }
 
+        // Free memory of the results and temporary matrices
+        for (int i = 0; i < 7; i++) {
+            free(args[i].matrixA);
+            free(args[i].matrixB);
+            free(args[i].result);
+        }
 
         free(a11);
         free(a12);
