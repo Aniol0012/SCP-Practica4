@@ -94,6 +94,7 @@ float **standardMultiplication(float **matrixA, float **matrixB, int n) {
 float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
     float **result = createZeroMatrix(n);
+
     if (n < threads) {
         threads = n;
     }

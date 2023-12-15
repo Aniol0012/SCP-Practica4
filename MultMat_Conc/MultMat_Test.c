@@ -19,7 +19,7 @@ Grau Informàtica
 #include "Errors.h"
 
 // Constants
-#define DEBUG 1
+#define DEBUG 0
 #define DEFAULT_THREADS 4
 char *input_path = ".";
 char *input_folder = "Input";
