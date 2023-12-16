@@ -90,7 +90,6 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
     if (n > Dim2StopRecursivity) {
         pthread_t threads_list[7];
         matrix_data data[7];
-        int thread_results[7];
 
         for (int i = 0; i < 7; i++) {
             data[i].matrixA = matrixA;
