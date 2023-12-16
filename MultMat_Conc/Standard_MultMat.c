@@ -23,12 +23,12 @@ extern int threads;
 
 /*
  * Struct to store the data of a section of the matrix multiplication.
- * @var float** matrixA: First matrix.
- * @var float** matrixB: Second matrix.
- * @var float** result: Result matrix.
- * @var int n: Matrix dimension.
- * @var int start_row: Start row of the section.
- * @var int end_row: End row of the section.
+ * float** matrixA: First matrix.
+ * float** matrixB: Second matrix.
+ * float** result: Result matrix.
+ * int n: Matrix dimension.
+ * int start_row: Start row of the section.
+ * int end_row: End row of the section.
 */
 typedef struct {
     float **matrixA;
