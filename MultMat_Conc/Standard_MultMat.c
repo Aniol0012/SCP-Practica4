@@ -29,7 +29,7 @@ extern int threads;
  * @var int n: Matrix dimension.
  * @var int start_row: Start row of the section.
  * @var int end_row: End row of the section.
- */
+*/
 typedef struct {
     float **matrixA;
     float **matrixB;
@@ -39,46 +39,15 @@ typedef struct {
     int end_row;
 } section_data;
 
-/*
- * Auxiliary function to process a section of the matrix multiplication.
- */
-void *process_section(section_data *data) {
-    section_data *task_data = data;
-    int i, j, k;
-    for (i = task_data->start_row; i < task_data->end_row; i++) {
-        for (j = 0; j < task_data->n; j++) {
-            for (k = 0; k < task_data->n; k++) {
-                task_data->result[i][j] += task_data->matrixA[i][k] * task_data->matrixB[k][j];
-            }
-        }
-    }
-    pthread_exit(NULL);
-}
+void *process_section(section_data *data);
+
+int get_end_row(int index, int n, int rows_per_section);
+
+void cancel_threads(pthread_t *threads_list, int threads_created);
+
 
 /*
- * Auxiliary function to get the end row of a section.
- */
-int get_end_row(int index, int n, int rows_per_section) {
-    if (index == threads - 1) {
-        return n;
-    } else {
-        return (index + 1) * rows_per_section;
-    }
-}
-
-/*
- * Auxiliary function to cancel all threads.
- */
-void cancel_threads(pthread_t *threads_list, int threads_created) {
-    for (int i = 0; i < threads_created; i++) {
-        if (pthread_cancel(threads_list[i])) {
-            Error("Error canceling threads (creation)");
-        }
-    }
-}
-
-/*
-* Standard Matrix multiplication with O(n^3) time complexity.
+ * Standard Matrix multiplication with O(n^3) time complexity.
 */
 float **standardMultiplication(float **matrixA, float **matrixB, int n) {
     return standardMultiplication_ijk(matrixA, matrixB, n);
@@ -89,7 +58,7 @@ float **standardMultiplication(float **matrixA, float **matrixB, int n) {
 
 
 /*
-* Standard ijk Matrix multiplication with O(n^3) time complexity.
+ * Standard ijk Matrix multiplication with O(n^3) time complexity.
 */
 float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
@@ -139,7 +108,7 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
 
 
 /*
-* Standard ijk Matrix multiplication with O(n^3) time complexity. (sequential)
+ * Standard ijk Matrix multiplication with O(n^3) time complexity. (sequential)
 */
 float **standardMultiplication_ijk_sec(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
@@ -168,7 +137,7 @@ float **standardMultiplication_ijk_sec(float **matrixA, float **matrixB, int n) 
 
 
 /*
-* Standard ikj Matrix multiplication with O(n^3) time complexity.
+ * Standard ikj Matrix multiplication with O(n^3) time complexity.
 */
 float **standardMultiplication_ikj_sec(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
@@ -193,4 +162,42 @@ float **standardMultiplication_ikj_sec(float **matrixA, float **matrixB, int n) 
     elapsed_std += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 
     return result;
+}
+
+/*
+ * Auxiliary function to process a section of the matrix multiplication.
+*/
+void *process_section(section_data *data) {
+    section_data *task_data = data;
+    int i, j, k;
+    for (i = task_data->start_row; i < task_data->end_row; i++) {
+        for (j = 0; j < task_data->n; j++) {
+            for (k = 0; k < task_data->n; k++) {
+                task_data->result[i][j] += task_data->matrixA[i][k] * task_data->matrixB[k][j];
+            }
+        }
+    }
+    pthread_exit(NULL);
+}
+
+/*
+ * Auxiliary function to get the end row of a section.
+*/
+int get_end_row(int index, int n, int rows_per_section) {
+    if (index == threads - 1) {
+        return n;
+    } else {
+        return (index + 1) * rows_per_section;
+    }
+}
+
+/*
+ * Auxiliary function to cancel all threads already created.
+*/
+void cancel_threads(pthread_t *threads_list, int threads_created) {
+    for (int i = 0; i < threads_created; i++) {
+        if (pthread_cancel(threads_list[i])) {
+            Error("Error canceling threads (creation)");
+        }
+    }
 }
