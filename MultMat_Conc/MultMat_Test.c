@@ -28,6 +28,7 @@ char *results_folder = "Results";
 char *tests_path = ".";
 char *tests_folder = "Test";
 int threads = DEFAULT_THREADS;
+// Todo: Pasar threads por parametro
 
 // Functions Prototypes
 void DoMatrixMultiplication(int n);
