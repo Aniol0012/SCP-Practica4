@@ -225,13 +225,13 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
         }
 
         //Recursive call for Divide and Conquer
-        pthread_create(&threads_list[0], NULL, calculate_m1, (void *) &data[0]);
-        pthread_create(&threads_list[1], NULL, calculate_m2, (void *) &data[1]);
-        pthread_create(&threads_list[2], NULL, calculate_m3, (void *) &data[2]);
-        pthread_create(&threads_list[3], NULL, calculate_m4, (void *) &data[3]);
-        pthread_create(&threads_list[4], NULL, calculate_m5, (void *) &data[4]);
-        pthread_create(&threads_list[5], NULL, calculate_m6, (void *) &data[5]);
-        pthread_create(&threads_list[6], NULL, calculate_m7, (void *) &data[6]);
+        pthread_create(&threads_list[0], NULL, calculate_m1, &data[0]);
+        pthread_create(&threads_list[1], NULL, calculate_m2, &data[1]);
+        pthread_create(&threads_list[2], NULL, calculate_m3, &data[2]);
+        pthread_create(&threads_list[3], NULL, calculate_m4, &data[3]);
+        pthread_create(&threads_list[4], NULL, calculate_m5, &data[4]);
+        pthread_create(&threads_list[5], NULL, calculate_m6, &data[5]);
+        pthread_create(&threads_list[6], NULL, calculate_m7, &data[6]);
 
 
         for (int i = 0; i < 7; i++) {
