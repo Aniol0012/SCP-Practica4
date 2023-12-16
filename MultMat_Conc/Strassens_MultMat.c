@@ -32,11 +32,14 @@ typedef struct {
     float **matrixB;
     float **result;
     int n;
+    int mx;
 } matrix_data;
 
-void cancel_threads_strassens(pthread_t *threads_list);
+void cancel_threads_strassens(pthread_t *threads_list, int index);
 
 void free_matrix(float **matrix, int n);
+
+void *calculate_mx(void *arg);
 
 void *calculate_m1(void *arg);
 
@@ -94,20 +97,13 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
             data[i].matrixB = matrixB;
             data[i].result = NULL;
             data[i].n = n;
+            data[i].mx = i + 1;
         }
 
         //Recursive call for Divide and Conquer
-        thread_results[0] = pthread_create(&threads_list[0], NULL, calculate_m1, &data[0]);
-        thread_results[1] = pthread_create(&threads_list[1], NULL, calculate_m2, &data[1]);
-        thread_results[2] = pthread_create(&threads_list[2], NULL, calculate_m3, &data[2]);
-        thread_results[3] = pthread_create(&threads_list[3], NULL, calculate_m4, &data[3]);
-        thread_results[4] = pthread_create(&threads_list[4], NULL, calculate_m5, &data[4]);
-        thread_results[5] = pthread_create(&threads_list[5], NULL, calculate_m6, &data[5]);
-        thread_results[6] = pthread_create(&threads_list[6], NULL, calculate_m7, &data[6]);
-
         for (int i = 0; i < 7; i++) {
-            if (thread_results[i] != 0) {
-                cancel_threads_strassens(threads_list);
+            if (pthread_create(&threads_list[i], NULL, calculate_mx, &data[i])) {
+                cancel_threads_strassens(threads_list, i);
                 Error("Error creating threads");
             }
         }
@@ -235,8 +231,8 @@ float **subMatrix(float **matrixA, float **matrixB, int n) {
 /*
  * Auxiliary function to cancel all threads.
 */
-void cancel_threads_strassens(pthread_t *threads_list) {
-    for (int i = 0; i < 7; i++) {
+void cancel_threads_strassens(pthread_t *threads_list, int index) {
+    for (int i = 0; i < index; i++) {
         if (pthread_cancel(threads_list[i])) {
             Error("Error canceling threads (creation)");
         }
@@ -255,6 +251,38 @@ void free_matrix(float **matrix, int n) {
         }
         free(matrix);
     }
+}
+
+void *calculate_mx(void *arg) {
+    matrix_data *data = (matrix_data *) arg;
+
+    switch (data->mx) {
+        case 1:
+            calculate_m1(arg);
+            break;
+        case 2:
+            calculate_m2(arg);
+            break;
+        case 3:
+            calculate_m3(arg);
+            break;
+        case 4:
+            calculate_m4(arg);
+            break;
+        case 5:
+            calculate_m5(arg);
+            break;
+        case 6:
+            calculate_m6(arg);
+            break;
+        case 7:
+            calculate_m7(arg);
+            break;
+        default:
+            Error("Error creating threads");
+    }
+
+    pthread_exit(NULL);
 }
 
 void *calculate_m1(void *arg) {
