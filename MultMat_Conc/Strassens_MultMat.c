@@ -252,6 +252,7 @@ void free_matrix(float **matrix, int n) {
     }
 }
 
+// todo: unificate functions calculate_mx
 void *calculate_mx(void *arg) {
     matrix_data *data = (matrix_data *) arg;
 
