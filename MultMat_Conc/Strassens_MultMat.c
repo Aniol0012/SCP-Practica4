@@ -251,26 +251,26 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
         float **m6 = data[5].result;
         float **m7 = data[6].result;
 
-        float **temp_sum, **temp_diff;
+        float **temp_A, **temp_B;
 
-        temp_sum = addMatrix(m1, m4, n / 2);
-        temp_diff = subMatrix(temp_sum, m5, n / 2);
+        temp_A = addMatrix(m1, m4, n / 2);
+        temp_B = subMatrix(temp_A, m5, n / 2);
 
-        float **c11 = addMatrix(temp_diff, m7, n / 2);
+        float **c11 = addMatrix(temp_B, m7, n / 2);
 
-        free_matrix(temp_sum, n / 2);
-        free_matrix(temp_diff, n / 2);
+        free_matrix(temp_A, n / 2);
+        free_matrix(temp_B, n / 2);
 
         float **c12 = addMatrix(m3, m5, n / 2);
         float **c21 = addMatrix(m2, m4, n / 2);
 
-        temp_sum = subMatrix(m1, m2, n / 2);
-        temp_diff = addMatrix(temp_sum, m3, n / 2);
+        temp_A = subMatrix(m1, m2, n / 2);
+        temp_B = addMatrix(temp_A, m3, n / 2);
 
-        float **c22 = addMatrix(temp_diff, m6, n / 2);
+        float **c22 = addMatrix(temp_B, m6, n / 2);
 
-        free_matrix(temp_sum, n / 2);
-        free_matrix(temp_diff, n / 2);
+        free_matrix(temp_A, n / 2);
+        free_matrix(temp_B, n / 2);
 
         // Compose the matrix
         compose(c11, result, 0, 0, n / 2);
@@ -287,7 +287,7 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
             free(data[i].result);
         }
     } else {
-        //This is the terminating condition for recurssion.
+        //This is the terminating condition for recursion.
         //result[0][0]=matrixA[0][0]*matrixB[0][0];
         result = standardMultiplication(matrixA, matrixB, n);
     }
