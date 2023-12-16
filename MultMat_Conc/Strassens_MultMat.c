@@ -63,17 +63,17 @@ void *calculate_m1(void *arg) {
     float **b11 = divide(data->matrixB, data->n, 0, 0);
     float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
 
-    float **sumA = addMatrix(a11, a22, data->n / 2);
-    float **sumB = addMatrix(b11, b22, data->n / 2);
+    float **add_A = addMatrix(a11, a22, data->n / 2);
+    float **add_B = addMatrix(b11, b22, data->n / 2);
 
-    data->result = strassensMultRec(sumA, sumB, data->n / 2);
+    data->result = strassensMultRec(add_A, add_B, data->n / 2);
 
     free_matrix(a11, data->n / 2);
     free_matrix(a22, data->n / 2);
     free_matrix(b11, data->n / 2);
     free_matrix(b22, data->n / 2);
-    free_matrix(sumA, data->n / 2);
-    free_matrix(sumB, data->n / 2);
+    free_matrix(add_A, data->n / 2);
+    free_matrix(add_B, data->n / 2);
 
     pthread_exit(NULL);
 }
@@ -85,14 +85,14 @@ void *calculate_m2(void *arg) {
     float **a22 = divide(data->matrixA, data->n, data->n / 2, data->n / 2);
     float **b11 = divide(data->matrixB, data->n, 0, 0);
 
-    float **sumA = addMatrix(a21, a22, data->n / 2);
+    float **add_A = addMatrix(a21, a22, data->n / 2);
 
-    data->result = strassensMultRec(sumA, b11, data->n / 2);
+    data->result = strassensMultRec(add_A, b11, data->n / 2);
 
     free_matrix(a21, data->n / 2);
     free_matrix(a22, data->n / 2);
     free_matrix(b11, data->n / 2);
-    free_matrix(sumA, data->n / 2);
+    free_matrix(add_A, data->n / 2);
 
     pthread_exit(NULL);
 }
@@ -104,14 +104,14 @@ void *calculate_m3(void *arg) {
     float **b12 = divide(data->matrixB, data->n, 0, data->n / 2);
     float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
 
-    float **subB = subMatrix(b12, b22, data->n / 2);
+    float **sub_B = subMatrix(b12, b22, data->n / 2);
 
-    data->result = strassensMultRec(a11, subB, data->n / 2);
+    data->result = strassensMultRec(a11, sub_B, data->n / 2);
 
     free_matrix(a11, data->n / 2);
     free_matrix(b12, data->n / 2);
     free_matrix(b22, data->n / 2);
-    free_matrix(subB, data->n / 2);
+    free_matrix(sub_B, data->n / 2);
 
     pthread_exit(NULL);
 }
@@ -123,14 +123,14 @@ void *calculate_m4(void *arg) {
     float **b21 = divide(data->matrixB, data->n, data->n / 2, 0);
     float **b11 = divide(data->matrixB, data->n, 0, 0);
 
-    float **subB = subMatrix(b21, b11, data->n / 2);
+    float **sub_B = subMatrix(b21, b11, data->n / 2);
 
-    data->result = strassensMultRec(a22, subB, data->n / 2);
+    data->result = strassensMultRec(a22, sub_B, data->n / 2);
 
     free_matrix(a22, data->n / 2);
     free_matrix(b21, data->n / 2);
     free_matrix(b11, data->n / 2);
-    free_matrix(subB, data->n / 2);
+    free_matrix(sub_B, data->n / 2);
 
     pthread_exit(NULL);
 }
@@ -142,14 +142,14 @@ void *calculate_m5(void *arg) {
     float **a12 = divide(data->matrixA, data->n, 0, data->n / 2);
     float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
 
-    float **sumA = addMatrix(a11, a12, data->n / 2);
+    float **add_A = addMatrix(a11, a12, data->n / 2);
 
-    data->result = strassensMultRec(sumA, b22, data->n / 2);
+    data->result = strassensMultRec(add_A, b22, data->n / 2);
 
     free_matrix(a11, data->n / 2);
     free_matrix(a12, data->n / 2);
     free_matrix(b22, data->n / 2);
-    free_matrix(sumA, data->n / 2);
+    free_matrix(add_A, data->n / 2);
 
     pthread_exit(NULL);
 }
@@ -162,17 +162,17 @@ void *calculate_m6(void *arg) {
     float **b11 = divide(data->matrixB, data->n, 0, 0);
     float **b12 = divide(data->matrixB, data->n, 0, data->n / 2);
 
-    float **subA = subMatrix(a21, a11, data->n / 2);
-    float **sumB = addMatrix(b11, b12, data->n / 2);
+    float **sub_A = subMatrix(a21, a11, data->n / 2);
+    float **add_B = addMatrix(b11, b12, data->n / 2);
 
-    data->result = strassensMultRec(subA, sumB, data->n / 2);
+    data->result = strassensMultRec(sub_A, add_B, data->n / 2);
 
     free_matrix(a21, data->n / 2);
     free_matrix(a11, data->n / 2);
     free_matrix(b11, data->n / 2);
     free_matrix(b12, data->n / 2);
-    free_matrix(subA, data->n / 2);
-    free_matrix(sumB, data->n / 2);
+    free_matrix(sub_A, data->n / 2);
+    free_matrix(add_B, data->n / 2);
 
     pthread_exit(NULL);
 }
@@ -185,17 +185,17 @@ void *calculate_m7(void *arg) {
     float **b21 = divide(data->matrixB, data->n, data->n / 2, 0);
     float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
 
-    float **subA = subMatrix(a12, a22, data->n / 2);
-    float **sumB = addMatrix(b21, b22, data->n / 2);
+    float **sub_A = subMatrix(a12, a22, data->n / 2);
+    float **add_B = addMatrix(b21, b22, data->n / 2);
 
-    data->result = strassensMultRec(subA, sumB, data->n / 2);
+    data->result = strassensMultRec(sub_A, add_B, data->n / 2);
 
     free_matrix(a12, data->n / 2);
     free_matrix(a22, data->n / 2);
     free_matrix(b21, data->n / 2);
     free_matrix(b22, data->n / 2);
-    free_matrix(subA, data->n / 2);
-    free_matrix(sumB, data->n / 2);
+    free_matrix(sub_A, data->n / 2);
+    free_matrix(add_B, data->n / 2);
 
     pthread_exit(NULL);
 }
