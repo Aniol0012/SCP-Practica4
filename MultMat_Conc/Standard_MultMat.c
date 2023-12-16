@@ -42,8 +42,8 @@ typedef struct {
 /*
  * Auxiliary function to process a section of the matrix multiplication.
  */
-void *process_section(section_data *section_data_thread) {
-    section_data *task_data = section_data_thread;
+void *process_section(section_data *data) {
+    section_data *task_data = data;
     int i, j, k;
     for (i = task_data->start_row; i < task_data->end_row; i++) {
         for (j = 0; j < task_data->n; j++) {
@@ -100,7 +100,7 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     }
 
     pthread_t threads_list[threads];
-    section_data section_data[threads];
+    section_data data[threads];
 
     int rows_per_section = n / threads;
     int i;
@@ -108,14 +108,14 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     clock_gettime(CLOCK_MONOTONIC, &start);
 
     for (i = 0; i < threads; i++) {
-        section_data[i].matrixA = matrixA;
-        section_data[i].matrixB = matrixB;
-        section_data[i].result = result;
-        section_data[i].n = n;
-        section_data[i].start_row = i * rows_per_section;
-        section_data[i].end_row = get_end_row(i, n, rows_per_section);
+        data[i].matrixA = matrixA;
+        data[i].matrixB = matrixB;
+        data[i].result = result;
+        data[i].n = n;
+        data[i].start_row = i * rows_per_section;
+        data[i].end_row = get_end_row(i, n, rows_per_section);
 
-        if (pthread_create(&threads_list[i], NULL, (void *) process_section, &section_data[i]) != 0) {
+        if (pthread_create(&threads_list[i], NULL, (void *) process_section, &data[i]) != 0) {
             cancel_threads(threads_list, i);
             Error("Error creating threads");
         }
