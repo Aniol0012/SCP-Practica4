@@ -20,6 +20,13 @@ Grau Informàtica
 double elapsed_str;
 int Dim2StopRecursivity = 10;
 
+/*
+ * Struct to store the data of a section of the matrix multiplication.
+ * @var float** matrixA: First matrix.
+ * @var float** matrixB: Second matrix.
+ * @var float** result: Result matrix.
+ * @var int n: Matrix dimension.
+ */
 typedef struct {
     float **matrixA;
     float **matrixB;
