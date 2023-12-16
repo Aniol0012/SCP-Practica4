@@ -26,7 +26,7 @@ int Dim2StopRecursivity = 10;
  * float** matrixB: Second matrix.
  * float** result: Result matrix.
  * int n: Matrix dimension.
- */
+*/
 typedef struct {
     float **matrixA;
     float **matrixB;
