@@ -59,175 +59,147 @@ void freeMatrix(float **matrix, int n) {
 
 
 void *calculate_m1(void *arg) {
-    matrix_data *data = (matrix_data *)arg;
+    matrix_data *data = (matrix_data *) arg;
 
-    if (data->n <= Dim2StopRecursivity) {
-        data->result = standardMultiplication(data->matrixA, data->matrixB, data->n);
-    } else {
-        float **a11 = divide(data->matrixA, data->n, 0, 0);
-        float **a22 = divide(data->matrixA, data->n, data->n / 2, data->n / 2);
-        float **b11 = divide(data->matrixB, data->n, 0, 0);
-        float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
+    float **a11 = divide(data->matrixA, data->n, 0, 0);
+    float **a22 = divide(data->matrixA, data->n, data->n / 2, data->n / 2);
+    float **b11 = divide(data->matrixB, data->n, 0, 0);
+    float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
 
-        float **sumA = addMatrix(a11, a22, data->n / 2);
-        float **sumB = addMatrix(b11, b22, data->n / 2);
+    float **sumA = addMatrix(a11, a22, data->n / 2);
+    float **sumB = addMatrix(b11, b22, data->n / 2);
 
-        data->result = strassensMultRec(sumA, sumB, data->n / 2);
+    data->result = strassensMultRec(sumA, sumB, data->n / 2);
 
-        freeMatrix(a11, data->n / 2);
-        freeMatrix(a22, data->n / 2);
-        freeMatrix(b11, data->n / 2);
-        freeMatrix(b22, data->n / 2);
-        freeMatrix(sumA, data->n / 2);
-        freeMatrix(sumB, data->n / 2);
-    }
+    freeMatrix(a11, data->n / 2);
+    freeMatrix(a22, data->n / 2);
+    freeMatrix(b11, data->n / 2);
+    freeMatrix(b22, data->n / 2);
+    freeMatrix(sumA, data->n / 2);
+    freeMatrix(sumB, data->n / 2);
 
     pthread_exit(NULL);
 }
 
 
 void *calculate_m2(void *arg) {
-    matrix_data *data = (matrix_data *)arg;
+    matrix_data *data = (matrix_data *) arg;
 
-    if (data->n <= Dim2StopRecursivity) {
-        data->result = standardMultiplication(data->matrixA, data->matrixB, data->n);
-    } else {
-        float **a21 = divide(data->matrixA, data->n, data->n / 2, 0);
-        float **a22 = divide(data->matrixA, data->n, data->n / 2, data->n / 2);
-        float **b11 = divide(data->matrixB, data->n, 0, 0);
+    float **a21 = divide(data->matrixA, data->n, data->n / 2, 0);
+    float **a22 = divide(data->matrixA, data->n, data->n / 2, data->n / 2);
+    float **b11 = divide(data->matrixB, data->n, 0, 0);
 
-        float **sumA = addMatrix(a21, a22, data->n / 2);
+    float **sumA = addMatrix(a21, a22, data->n / 2);
 
-        data->result = strassensMultRec(sumA, b11, data->n / 2);
+    data->result = strassensMultRec(sumA, b11, data->n / 2);
 
-        freeMatrix(a21, data->n / 2);
-        freeMatrix(a22, data->n / 2);
-        freeMatrix(b11, data->n / 2);
-        freeMatrix(sumA, data->n / 2);
-    }
+    freeMatrix(a21, data->n / 2);
+    freeMatrix(a22, data->n / 2);
+    freeMatrix(b11, data->n / 2);
+    freeMatrix(sumA, data->n / 2);
 
     pthread_exit(NULL);
 }
 
 void *calculate_m3(void *arg) {
-    matrix_data *data = (matrix_data *)arg;
+    matrix_data *data = (matrix_data *) arg;
 
-    if (data->n <= Dim2StopRecursivity) {
-        data->result = standardMultiplication(data->matrixA, data->matrixB, data->n);
-    } else {
-        float **a11 = divide(data->matrixA, data->n, 0, 0);
-        float **b12 = divide(data->matrixB, data->n, 0, data->n / 2);
-        float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
+    float **a11 = divide(data->matrixA, data->n, 0, 0);
+    float **b12 = divide(data->matrixB, data->n, 0, data->n / 2);
+    float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
 
-        float **subB = subMatrix(b12, b22, data->n / 2);
+    float **subB = subMatrix(b12, b22, data->n / 2);
 
-        data->result = strassensMultRec(a11, subB, data->n / 2);
+    data->result = strassensMultRec(a11, subB, data->n / 2);
 
-        freeMatrix(a11, data->n / 2);
-        freeMatrix(b12, data->n / 2);
-        freeMatrix(b22, data->n / 2);
-        freeMatrix(subB, data->n / 2);
-    }
+    freeMatrix(a11, data->n / 2);
+    freeMatrix(b12, data->n / 2);
+    freeMatrix(b22, data->n / 2);
+    freeMatrix(subB, data->n / 2);
 
     pthread_exit(NULL);
 }
 
 void *calculate_m4(void *arg) {
-    matrix_data *data = (matrix_data *)arg;
+    matrix_data *data = (matrix_data *) arg;
 
-    if (data->n <= Dim2StopRecursivity) {
-        data->result = standardMultiplication(data->matrixA, data->matrixB, data->n);
-    } else {
-        float **a22 = divide(data->matrixA, data->n, data->n / 2, data->n / 2);
-        float **b21 = divide(data->matrixB, data->n, data->n / 2, 0);
-        float **b11 = divide(data->matrixB, data->n, 0, 0);
+    float **a22 = divide(data->matrixA, data->n, data->n / 2, data->n / 2);
+    float **b21 = divide(data->matrixB, data->n, data->n / 2, 0);
+    float **b11 = divide(data->matrixB, data->n, 0, 0);
 
-        float **subB = subMatrix(b21, b11, data->n / 2);
+    float **subB = subMatrix(b21, b11, data->n / 2);
 
-        data->result = strassensMultRec(a22, subB, data->n / 2);
+    data->result = strassensMultRec(a22, subB, data->n / 2);
 
-        freeMatrix(a22, data->n / 2);
-        freeMatrix(b21, data->n / 2);
-        freeMatrix(b11, data->n / 2);
-        freeMatrix(subB, data->n / 2);
-    }
+    freeMatrix(a22, data->n / 2);
+    freeMatrix(b21, data->n / 2);
+    freeMatrix(b11, data->n / 2);
+    freeMatrix(subB, data->n / 2);
 
     pthread_exit(NULL);
 }
 
 void *calculate_m5(void *arg) {
-    matrix_data *data = (matrix_data *)arg;
+    matrix_data *data = (matrix_data *) arg;
 
-    if (data->n <= Dim2StopRecursivity) {
-        data->result = standardMultiplication(data->matrixA, data->matrixB, data->n);
-    } else {
-        float **a11 = divide(data->matrixA, data->n, 0, 0);
-        float **a12 = divide(data->matrixA, data->n, 0, data->n / 2);
-        float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
+    float **a11 = divide(data->matrixA, data->n, 0, 0);
+    float **a12 = divide(data->matrixA, data->n, 0, data->n / 2);
+    float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
 
-        float **sumA = addMatrix(a11, a12, data->n / 2);
+    float **sumA = addMatrix(a11, a12, data->n / 2);
 
-        data->result = strassensMultRec(sumA, b22, data->n / 2);
+    data->result = strassensMultRec(sumA, b22, data->n / 2);
 
-        freeMatrix(a11, data->n / 2);
-        freeMatrix(a12, data->n / 2);
-        freeMatrix(b22, data->n / 2);
-        freeMatrix(sumA, data->n / 2);
-    }
+    freeMatrix(a11, data->n / 2);
+    freeMatrix(a12, data->n / 2);
+    freeMatrix(b22, data->n / 2);
+    freeMatrix(sumA, data->n / 2);
 
     pthread_exit(NULL);
 }
 
 void *calculate_m6(void *arg) {
-    matrix_data *data = (matrix_data *)arg;
+    matrix_data *data = (matrix_data *) arg;
 
-    if (data->n <= Dim2StopRecursivity) {
-        data->result = standardMultiplication(data->matrixA, data->matrixB, data->n);
-    } else {
-        float **a21 = divide(data->matrixA, data->n, data->n / 2, 0);
-        float **a11 = divide(data->matrixA, data->n, 0, 0);
-        float **b11 = divide(data->matrixB, data->n, 0, 0);
-        float **b12 = divide(data->matrixB, data->n, 0, data->n / 2);
+    float **a21 = divide(data->matrixA, data->n, data->n / 2, 0);
+    float **a11 = divide(data->matrixA, data->n, 0, 0);
+    float **b11 = divide(data->matrixB, data->n, 0, 0);
+    float **b12 = divide(data->matrixB, data->n, 0, data->n / 2);
 
-        float **subA = subMatrix(a21, a11, data->n / 2);
-        float **sumB = addMatrix(b11, b12, data->n / 2);
+    float **subA = subMatrix(a21, a11, data->n / 2);
+    float **sumB = addMatrix(b11, b12, data->n / 2);
 
-        data->result = strassensMultRec(subA, sumB, data->n / 2);
+    data->result = strassensMultRec(subA, sumB, data->n / 2);
 
-        freeMatrix(a21, data->n / 2);
-        freeMatrix(a11, data->n / 2);
-        freeMatrix(b11, data->n / 2);
-        freeMatrix(b12, data->n / 2);
-        freeMatrix(subA, data->n / 2);
-        freeMatrix(sumB, data->n / 2);
-    }
+    freeMatrix(a21, data->n / 2);
+    freeMatrix(a11, data->n / 2);
+    freeMatrix(b11, data->n / 2);
+    freeMatrix(b12, data->n / 2);
+    freeMatrix(subA, data->n / 2);
+    freeMatrix(sumB, data->n / 2);
 
     pthread_exit(NULL);
 }
 
 void *calculate_m7(void *arg) {
-    matrix_data *data = (matrix_data *)arg;
+    matrix_data *data = (matrix_data *) arg;
 
-    if (data->n <= Dim2StopRecursivity) {
-        data->result = standardMultiplication(data->matrixA, data->matrixB, data->n);
-    } else {
-        float **a12 = divide(data->matrixA, data->n, 0, data->n / 2);
-        float **a22 = divide(data->matrixA, data->n, data->n / 2, data->n / 2);
-        float **b21 = divide(data->matrixB, data->n, data->n / 2, 0);
-        float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
+    float **a12 = divide(data->matrixA, data->n, 0, data->n / 2);
+    float **a22 = divide(data->matrixA, data->n, data->n / 2, data->n / 2);
+    float **b21 = divide(data->matrixB, data->n, data->n / 2, 0);
+    float **b22 = divide(data->matrixB, data->n, data->n / 2, data->n / 2);
 
-        float **subA = subMatrix(a12, a22, data->n / 2);
-        float **sumB = addMatrix(b21, b22, data->n / 2);
+    float **subA = subMatrix(a12, a22, data->n / 2);
+    float **sumB = addMatrix(b21, b22, data->n / 2);
 
-        data->result = strassensMultRec(subA, sumB, data->n / 2);
+    data->result = strassensMultRec(subA, sumB, data->n / 2);
 
-        freeMatrix(a12, data->n / 2);
-        freeMatrix(a22, data->n / 2);
-        freeMatrix(b21, data->n / 2);
-        freeMatrix(b22, data->n / 2);
-        freeMatrix(subA, data->n / 2);
-        freeMatrix(sumB, data->n / 2);
-    }
+    freeMatrix(a12, data->n / 2);
+    freeMatrix(a22, data->n / 2);
+    freeMatrix(b21, data->n / 2);
+    freeMatrix(b22, data->n / 2);
+    freeMatrix(subA, data->n / 2);
+    freeMatrix(sumB, data->n / 2);
 
     pthread_exit(NULL);
 }
