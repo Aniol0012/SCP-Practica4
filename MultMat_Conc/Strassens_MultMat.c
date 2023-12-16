@@ -205,8 +205,6 @@ void *calculate_m7(void *arg) {
 }
 
 /* Todo:
- * - Eliminar la condición de parada en caso de multRec
- * - Cambiar nombre al strassensmultRec
  * - Pasar los threads como parametro
  * - Crear una funcion para calcular los mX
  * - Crear los hilos unicamente una vez
@@ -217,7 +215,7 @@ void *calculate_m7(void *arg) {
 */
 float **strassensMultRec(float **matrixA, float **matrixB, int n) {
     float **result = createZeroMatrix(n);
-    // Todo: Eliminar esta condición
+
     if (n > Dim2StopRecursivity) {
         pthread_t threads[7];
         matrix_data data[7];
