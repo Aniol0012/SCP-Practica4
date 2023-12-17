@@ -104,6 +104,7 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
             data[i].result = NULL;
             data[i].n = n;
             data[i].start_index = start_index;
+            // todo: refactor this
             data[i].end_index = start_index + task_per_thread + (i < extra_tasks ? 1 : 0) - 1;
             start_index = data[i].end_index + 1;
         }
