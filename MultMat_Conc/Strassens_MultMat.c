@@ -35,8 +35,6 @@ typedef struct {
     float **result;
     int n;
     int mx;
-    int start_index;
-    int end_index;
 } matrix_data;
 
 void cancel_threads_strassens(pthread_t *threads_list, int index);
@@ -85,12 +83,6 @@ float **strassensMultiplication(float **matrixA, float **matrixB, int n) {
     return result;
 }
 
-/* Todo:
- * - Pasar los threads como parametro
- * - Crear una funcion para calcular los mX
- * - Crear los hilos unicamente una vez
- * - En cas que fallin els fils al crearse o el join, cancelar els fils
-*/
 
 /*
  * Strassen's Multiplication algorithm using Divide and Conquer technique.
@@ -102,19 +94,12 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
         pthread_t threads_list[actual_threads];
         matrix_data data[7];
 
-        int task_per_thread = 7 / actual_threads;
-        int extra_tasks = 7 % actual_threads;
-
-        int start_index = 0;
         for (int i = 0; i < 7; i++) {
             data[i].matrixA = matrixA;
             data[i].matrixB = matrixB;
             data[i].result = NULL;
             data[i].n = n;
             data[i].mx = i + 1;
-            data[i].start_index = start_index;
-            data[i].end_index = start_index + task_per_thread + (i < extra_tasks ? 1 : 0) - 1;
-            start_index = data[i].end_index + 1;
         }
 
         // Recursive call for Divide and Conquer
@@ -272,7 +257,9 @@ void free_matrix(float **matrix, int n) {
 }
 
 void *calculate_mx(matrix_data *data) {
-    for (int i = data->start_index; i <= data->end_index; i++) {
+    int thread_id = data->mx - 1;
+
+    for (int i = thread_id; i < 7; i += actual_threads) {
         matrix_data *task_data = data;
 
         switch (i +1) {
