@@ -19,6 +19,8 @@ Grau Informàtica
 
 double elapsed_str;
 int Dim2StopRecursivity = 10;
+extern int threads;
+int actual_threads = 0;
 
 /*
  * Struct to store the data of a section of the matrix multiplication.
@@ -33,6 +35,8 @@ typedef struct {
     float **result;
     int n;
     int mx;
+    int start_index;
+    int end_index;
 } matrix_data;
 
 void cancel_threads_strassens(pthread_t *threads_list, int index);
@@ -65,6 +69,13 @@ float **strassensMultiplication(float **matrixA, float **matrixB, int n) {
     if (n > 32)
         Dim2StopRecursivity = n / 16;
 
+    // Max number of concurrency (tasks) is 7
+    if (threads > 7) {
+        actual_threads = 7;
+    } else {
+        actual_threads = threads;
+    }
+
     float **result = strassensMultRec(matrixA, matrixB, n);
 
     clock_gettime(CLOCK_MONOTONIC, &finish);
@@ -88,26 +99,33 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
     float **result = createZeroMatrix(n);
 
     if (n > Dim2StopRecursivity) {
-        pthread_t threads_list[7];
+        pthread_t threads_list[actual_threads];
         matrix_data data[7];
 
+        int task_per_thread = 7 / actual_threads;
+        int extra_tasks = 7 % actual_threads;
+
+        int start_index = 0;
         for (int i = 0; i < 7; i++) {
             data[i].matrixA = matrixA;
             data[i].matrixB = matrixB;
             data[i].result = NULL;
             data[i].n = n;
             data[i].mx = i + 1;
+            data[i].start_index = start_index;
+            data[i].end_index = start_index + task_per_thread + (i < extra_tasks ? 1 : 0) - 1;
+            start_index = data[i].end_index + 1;
         }
 
-        //Recursive call for Divide and Conquer
-        for (int i = 0; i < 7; i++) {
-            if (pthread_create(&threads_list[i], NULL, (void *)calculate_mx, &data[i])) {
+        // Recursive call for Divide and Conquer
+        for (int i = 0; i < actual_threads; i++) {
+            if (pthread_create(&threads_list[i], NULL, (void *) calculate_mx, &data[i])) {
                 cancel_threads_strassens(threads_list, i);
                 Error("Error creating threads");
             }
         }
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < actual_threads; i++) {
             if (pthread_join(threads_list[i], NULL)) {
                 if (pthread_cancel(threads_list[i])) {
                     Error("Error canceling threads (join)");
@@ -160,11 +178,12 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
             free(data[i].result);
         }
     } else {
-        //This is the terminating condition for recursion.
-        //result[0][0]=matrixA[0][0]*matrixB[0][0];
+//This is the terminating condition for recursion.
+//result[0][0]=matrixA[0][0]*matrixB[0][0];
         result = standardMultiplication(matrixA, matrixB, n);
     }
-    return result;
+    return
+            result;
 }
 
 /*
@@ -253,34 +272,42 @@ void free_matrix(float **matrix, int n) {
 }
 
 void *calculate_mx(matrix_data *data) {
-    matrix_data *task_data = data;
+    for (int i = data->start_index; i <= data->end_index; i++) {
+        matrix_data *task_data = data;
 
-    switch (task_data->mx) {
-        case 1:
-            calculate_m1(task_data);
-            break;
-        case 2:
-            calculate_m2(task_data);
-            break;
-        case 3:
-            calculate_m3(task_data);
-            break;
-        case 4:
-            calculate_m4(task_data);
-            break;
-        case 5:
-            calculate_m5(task_data);
-            break;
-        case 6:
-            calculate_m6(task_data);
-            break;
-        case 7:
-            calculate_m7(task_data);
-            break;
-        default:
-            Error("Error creating threads");
+        switch (i +1) {
+            case 1:
+                print("m1\n");
+                calculate_m1(task_data);
+                break;
+            case 2:
+                print("m2\n");
+                calculate_m2(task_data);
+                break;
+            case 3:
+                print("m3\n");
+                calculate_m3(task_data);
+                break;
+            case 4:
+                print("m4\n");
+                calculate_m4(task_data);
+                break;
+            case 5:
+                print("m5\n");
+                calculate_m5(task_data);
+                break;
+            case 6:
+                print("m6\n");
+                calculate_m6(task_data);
+                break;
+            case 7:
+                print("m7\n");
+                calculate_m7(task_data);
+                break;
+            default:
+                Error("Error creating threads");
+        }
     }
-
     pthread_exit(NULL);
 }
 
