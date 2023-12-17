@@ -19,7 +19,7 @@ Grau Informàtica
 #include "Errors.h"
 
 // Constants
-#define DEBUG 0
+#define DEBUG 1
 #define DEFAULT_THREADS 4
 char *input_path = ".";
 char *input_folder = "Input";
@@ -27,8 +27,8 @@ char *results_path = ".";
 char *results_folder = "Results";
 char *tests_path = ".";
 char *tests_folder = "Test";
-int threads = DEFAULT_THREADS;
-// Todo: Pasar threads por parametro
+int threads;
+int given_threads;
 
 // Functions Prototypes
 void DoMatrixMultiplication(int n);
@@ -37,6 +37,12 @@ void DoMatrixMultiplication(int n);
 * Main function where the execution starts.
 */
 int main(int argc, char **argv) {
+
+    if (argc == 2) {
+        given_threads = atoi(argv[1]);
+    } else {
+        given_threads = DEFAULT_THREADS;
+    }
 
     DoMatrixMultiplication(4);
     DoMatrixMultiplication(16);
@@ -59,6 +65,20 @@ void DoMatrixMultiplication(int n) {
 
     sprintf(debug_msg, "[Main] Testing Matrix %dx%d multiplication.\n", n, n);
     printMessage(debug_msg, COLOR_CYAN);
+
+    if (given_threads > n) {
+        threads = n;
+    } else {
+        if (given_threads < 1) {
+            threads = DEFAULT_THREADS;
+            if (DEBUG) {
+                sprintf(debug_msg, "[Main] Invalid number of threads. Threads set to default (%d).\n", threads);
+                printMessage(debug_msg, COLOR_CYAN);
+            }
+        } else {
+            threads = given_threads;
+        }
+    }
 
     if (DEBUG) {
         sprintf(debug_msg, "[Main] Number of threads: %d.\n", threads);

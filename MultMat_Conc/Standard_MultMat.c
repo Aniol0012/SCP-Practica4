@@ -64,10 +64,6 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
     struct timespec start, finish;
     float **result = createZeroMatrix(n);
 
-    if (n < threads) {
-        threads = n;
-    }
-
     pthread_t threads_list[threads];
     section_data data[threads];
 

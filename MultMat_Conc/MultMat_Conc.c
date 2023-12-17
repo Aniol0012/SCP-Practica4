@@ -20,7 +20,7 @@ Grau Informàtica
 #include "Errors.h"
 
 // Constants
-#define DEBUG 1
+#define DEBUG 0
 #define DEFAULT_THREADS 4
 char *usage_msg = "Usage: MultMat_Conc <MatrixA_File> <MatrixB_File> <ResultMatrix_File>\n       or\n       Strassen_Sec <Matrix_size> <Matrix_RootFolder>\n    or\n       Strassen_Sec <Matrix_size> <Matrix_RootFolder> <Threads>\n";
 char *input_folder = "Input";
