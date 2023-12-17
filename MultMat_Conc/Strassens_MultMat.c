@@ -258,43 +258,37 @@ void free_matrix(float **matrix, int n) {
 
 void *calculate_mx(matrix_data *data) {
     int thread_id = data->mx - 1;
+    int current_mx = thread_id;
 
-    for (int i = thread_id; i < 7; i += actual_threads) {
-        matrix_data *task_data = data;
-
-        switch (i +1) {
+    while (current_mx < 7) {
+        switch (current_mx + 1) {
             case 1:
-                print("m1\n");
-                calculate_m1(task_data);
+                calculate_m1(data);
                 break;
             case 2:
-                print("m2\n");
-                calculate_m2(task_data);
+                calculate_m2(data);
                 break;
             case 3:
-                print("m3\n");
-                calculate_m3(task_data);
+                calculate_m3(data);
                 break;
             case 4:
-                print("m4\n");
-                calculate_m4(task_data);
+                calculate_m4(data);
                 break;
             case 5:
-                print("m5\n");
-                calculate_m5(task_data);
+                calculate_m5(data);
                 break;
             case 6:
-                print("m6\n");
-                calculate_m6(task_data);
+                calculate_m6(data);
                 break;
             case 7:
-                print("m7\n");
-                calculate_m7(task_data);
+                calculate_m7(data);
                 break;
             default:
                 Error("Error creating threads");
         }
+        current_mx += actual_threads;
     }
+
     pthread_exit(NULL);
 }
 
