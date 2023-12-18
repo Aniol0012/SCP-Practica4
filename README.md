@@ -100,7 +100,7 @@ You can check this implementation at [Strassens_MultMat.c](./MultMat_Conc/Strass
 
 A conceptual function calling can be shown like this:
 
-![strassens_1](https://github.com/Aniol0012/SCP-Practica4/assets/53788631/80bf5883-a392-4c50-bda1-5ecf2ea8fd07)
+![diagrama_strassens](https://github.com/Aniol0012/SCP-Practica4/assets/53788631/56602f1f-28e1-4ff9-a119-5d562e304cc7)
 
 > [!NOTE]
 > Take in account that by each mX call (*calculate_mx()*) it generates 7 new threads.
