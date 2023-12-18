@@ -7,9 +7,7 @@ Multiplication using two different methods: [standard](#standard-matrix-multipli
 The objective is to demonstrate and compare the efficiency of these methods in a concurrent computing context.
 This project is developed for the Computer Science degree at the University of Lleida ([UDL](https://udl.cat)), Spain.
 
-
-
-[^1]: **SCP** Stands for *Sistemes Concurrents i Paral·lels* (Concurrent and Parallel Systems) which is the Catalan name for the subject.
+> [^1]: **SCP** Stands for *Sistemes Concurrents i Paral·lels* (Concurrent and Parallel Systems) which is the Catalan name for the subject.
 
 ## Standard Matrix Multiplication
 
@@ -24,7 +22,7 @@ A visual example of the standard matrix multiplication is shown below:
 There are to approaches to implement this method, ijk and ikj. The first one is the most common and the second one is
 the most efficient one. The reason is that the first one is not cache friendly, since it iterates over the rows of the
 
-ijk matrix multiplication should look like this:
+**ijk** matrix multiplication should look like this:
 
 ```c
 int A[n][n], B[n][n], C[n][n];
@@ -40,7 +38,7 @@ for (i = 0; i < n; i++) {
 ```
 
 > [!TIP]
-> Check [geeksforgeeks](https://www.geeksforgeeks.org/c-program-multiply-two-matrices/) for more information.
+> Check [geeksforgeeks](https://www.geeksforgeeks.org/c-program-multiply-two-matrices/) for more information about standard matrix multiplication
 
 
 ## Strassen Matrix Multiplication
@@ -49,7 +47,7 @@ The Strassen method is an advanced algorithm that divides the matrices into smal
 
 
 > [!TIP]
-> Check [geeksforgeeks](https://www.geeksforgeeks.org/strassens-matrix-multiplication/) for more information.
+> Check [geeksforgeeks](https://www.geeksforgeeks.org/strassens-matrix-multiplication/) for more information about strassen matrix multiplication
 
 ## Documentation
 
