@@ -61,6 +61,12 @@ These implementations dive us to the concurrent implementation of the algorithms
 
 ### Concurrent Strassen Matrix Multiplication
 
+A conceptual function calling can be shown like this:
+
+![strassens_1](https://github.com/Aniol0012/SCP-Practica4/assets/53788631/80bf5883-a392-4c50-bda1-5ecf2ea8fd07)
+
+> [!NOTE]
+> Take in account that by each mX call (*calculate_mx()*) it generates 7 new threads.
 
 ## Documentation
 
