@@ -99,7 +99,7 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
             data[i].matrixB = matrixB;
             data[i].result = NULL;
             data[i].n = n;
-            data[i].mx = i + 1;
+            data[i].mx = i;
         }
 
         // Recursive call for Divide and Conquer
@@ -257,10 +257,8 @@ void free_matrix(float **matrix, int n) {
 }
 
 void *calculate_mx(matrix_data *data) {
-    int thread_id = data->mx - 1;
-
     for (int mx = 1; mx <= 7; mx++) {
-        if ((mx - 1) % actual_threads == thread_id) {
+        if ((mx - 1) % actual_threads == data->mx) {
             switch (mx) {
                 case 1:
                     print("m1\n");
