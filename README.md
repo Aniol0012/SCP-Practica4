@@ -6,6 +6,9 @@ This project is a simple implementation of a Matrix Multiplication using [tradit
 
 For more information check out the [assignment](./Practica4_SCP.pdf) file.
 
+> [!NOTE]
+> **SCP** Stands for *Sistemes Concurrents i Paral·lels* which is the Catalan name for the subject.
+
 ## Installation
 Clone the repo:
 
