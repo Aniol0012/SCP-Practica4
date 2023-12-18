@@ -33,8 +33,8 @@ git clone https://github.com/Aniol0012/SCP-Practica4.git
 
 ## Authors
 
-- @Aniol0012
-- @aleixsegura
+@Aniol0012
+@aleixsegura
 
 <!--
 - [@Aniol0012](https://github.com/Aniol0012)
