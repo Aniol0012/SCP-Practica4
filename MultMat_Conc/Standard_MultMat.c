@@ -45,6 +45,8 @@ int get_end_row(int index, int n, int rows_per_section);
 
 void cancel_threads(pthread_t *threads_list, int threads_created);
 
+void cancel_all_threads(pthread_t *threads_list);
+
 
 /*
  * Standard Matrix multiplication with O(n^3) time complexity.
@@ -80,7 +82,7 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
         data[i].start_row = i * rows_per_section;
         data[i].end_row = get_end_row(i, n, rows_per_section);
 
-        if (pthread_create(&threads_list[i], NULL, (void *) process_section, &data[i]) != 0) {
+        if (pthread_create(&threads_list[i], NULL, (void *) process_section, &data[i])) {
             cancel_threads(threads_list, i);
             Error("Error creating threads");
         }
@@ -88,9 +90,7 @@ float **standardMultiplication_ijk(float **matrixA, float **matrixB, int n) {
 
     for (i = 0; i < threads; i++) {
         if (pthread_join(threads_list[i], NULL)) {
-            if (pthread_cancel(threads_list[i])) {
-                Error("Error canceling threads (join)");
-            }
+            cancel_all_threads(threads_list);
             Error("Error joining threads");
         }
     }
@@ -193,6 +193,14 @@ void cancel_threads(pthread_t *threads_list, int threads_created) {
     for (int i = 0; i < threads_created; i++) {
         if (pthread_cancel(threads_list[i])) {
             Error("Error canceling threads (creation)");
+        }
+    }
+}
+
+void cancel_all_threads(pthread_t *threads_list) {
+    for (int i = 0; i < threads; i++) {
+        if (pthread_cancel(threads_list[i])) {
+            Error("Error canceling threads (join)");
         }
     }
 }

@@ -38,6 +38,8 @@ typedef struct {
 
 void cancel_threads_strassens(pthread_t *threads_list, int index);
 
+void cancel_all_threads_strassens(pthread_t *threads_list);
+
 void free_matrix(float **matrix, int n);
 
 void *calculate_mx(matrix_data *data);
@@ -107,9 +109,7 @@ float **strassensMultRec(float **matrixA, float **matrixB, int n) {
 
         for (int i = 0; i < threads; i++) {
             if (pthread_join(threads_list[i], NULL)) {
-                if (pthread_cancel(threads_list[i])) {
-                    Error("Error canceling threads (join)");
-                }
+                cancel_all_threads_strassens(threads_list);
                 Error("Error joining threads");
             }
         }
@@ -232,6 +232,17 @@ void cancel_threads_strassens(pthread_t *threads_list, int index) {
     for (int i = 0; i < index; i++) {
         if (pthread_cancel(threads_list[i])) {
             Error("Error canceling threads (creation)");
+        }
+    }
+}
+
+/*
+ * Auxiliary function to cancel all threads.
+*/
+void cancel_all_threads_strassens(pthread_t *threads_list) {
+    for (int i = 0; i < threads; i++) {
+        if (pthread_cancel(threads_list[i])) {
+            Error("Error canceling threads (join)");
         }
     }
 }
