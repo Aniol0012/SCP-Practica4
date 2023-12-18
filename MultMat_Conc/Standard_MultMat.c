@@ -164,12 +164,11 @@ float **standardMultiplication_ikj_sec(float **matrixA, float **matrixB, int n) 
  * Auxiliary function to process a section of the matrix multiplication.
 */
 void *process_section(section_data *data) {
-    section_data *task_data = data;
     int i, j, k;
-    for (i = task_data->start_row; i < task_data->end_row; i++) {
-        for (j = 0; j < task_data->n; j++) {
-            for (k = 0; k < task_data->n; k++) {
-                task_data->result[i][j] += task_data->matrixA[i][k] * task_data->matrixB[k][j];
+    for (i = data->start_row; i < data->end_row; i++) {
+        for (j = 0; j < data->n; j++) {
+            for (k = 0; k < data->n; k++) {
+                data->result[i][j] += data->matrixA[i][k] * data->matrixB[k][j];
             }
         }
     }
