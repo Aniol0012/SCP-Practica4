@@ -3,7 +3,7 @@
 ## Description
 
 This project, part of the *Sistemes Concurrents i Paral·lels* (SCP[^1]) subject, explores concurrent Matrix 
-Multiplication using two different methods: [standard](#standard-matrix-multiplication) and [strassen](#strassen-matrix-multiplication).
+Multiplication using two different methods: [standard](#standard-matrix-multiplication) and [Strassen](#strassen-matrix-multiplication).
 The objective is to demonstrate and compare the efficiency of these methods in a concurrent computing context.
 This project is developed for the Computer Science degree at the University of Lleida ([UDL](https://udl.cat)), Spain.
 
@@ -19,8 +19,13 @@ A visual example of the standard matrix multiplication is shown below:
 
 ![bad3a8b38db64a918543146979adcea0](https://github.com/Aniol0012/SCP-Practica4/assets/53788631/6077d953-70de-4888-86b1-2180ddf95774)
 
-There are to approaches to implement this method, ijk and ikj. The first one is the most common and the second one is
-the most efficient one. The reason is that the first one is not cache friendly, since it iterates over the rows of the
+There are two approaches to implement this method, **ijk** and **ikj**. The first one is the most **common** and the second one is
+the most **efficient** one. The reason is that the first one is not cache friendly, since it iterates over the rows of the
+first matrix, then over the columns of the second matrix and finally over the columns of the first matrix. This means
+that the elements of the first matrix are not stored in the cache, since the iteration is not sequential. The second
+approach is more cache friendly, since it iterates over the rows of the first matrix, then over the columns of the first
+matrix and finally over the columns of the second matrix. This means that the elements of the first matrix are stored in
+the cache, since the iteration is sequential.
 
 **ijk** matrix multiplication should look like this:
 
@@ -50,7 +55,7 @@ A visual example of this is shown below:
 
 
 > [!TIP]
-> Check [geeksforgeeks](https://www.geeksforgeeks.org/strassens-matrix-multiplication/) for more information about strassen matrix multiplication
+> Check [geeksforgeeks](https://www.geeksforgeeks.org/strassens-matrix-multiplication/) for more information about Strassen matrix multiplication
 
 ## Concurrent implementation
 These implementations dive us to the concurrent implementation of the algorithms.
