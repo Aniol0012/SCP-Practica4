@@ -52,6 +52,16 @@ A visual example of this is shown below:
 > [!TIP]
 > Check [geeksforgeeks](https://www.geeksforgeeks.org/strassens-matrix-multiplication/) for more information about strassen matrix multiplication
 
+## Concurrent implementation
+These implementations dive us to the concurrent implementation of the algorithms.
+
+### Concurrent Standard Matrix Multiplication
+
+
+
+### Concurrent Strassen Matrix Multiplication
+
+
 ## Documentation
 
 - To check the assignment of this file check [assignment](./Practica4_SCP.pdf) file.
