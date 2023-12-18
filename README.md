@@ -44,6 +44,9 @@ for (i = 0; i < n; i++) {
 ## Strassen Matrix Multiplication
 
 The Strassen method is an advanced algorithm that divides the matrices into smaller ones, reducing the number of multiplicative operations, thus potentially improving performance on large matrices.
+A visual example of this is shown below:
+
+![strassen_new](https://github.com/Aniol0012/SCP-Practica4/assets/53788631/5abfa375-036d-4312-8a06-5eec0c11c30f)
 
 
 > [!TIP]
