@@ -2,21 +2,21 @@
 
 ---
 ## Table of Contents
-1. 📝 [Description](#description)
-2. 🧮 [Standard Matrix Multiplication](#standard-matrix-multiplication)
-3. 🌀 [Strassen Matrix Multiplication](#strassen-matrix-multiplication)
-4. ⚙️ [Concurrent Implementation](#concurrent-implementation)
-    - 📊 [Concurrent Standard Matrix Multiplication](#concurrent-standard-matrix-multiplication)
-    - 🌐 [Concurrent Strassen Matrix Multiplication](#concurrent-strassen-matrix-multiplication)
-5. 📚 [Documentation](#documentation)
-6. 📦 [Installation](#installation)
-7. 🚀 [Usage](#usage)
-    - 🧑‍💻 [Automatic](#automatic)
-    - ✍️ [Manual](#manual)
-        - 🌟 [Main](#main)
-        - 🧪 [Tests](#tests)
-8. 👥 [Authors](#authors)
-9. 📄 [License](#license)
+1. 📝 [Description](#-description)
+2. 🧮 [Standard Matrix Multiplication](#-standard-matrix-multiplication)
+3. 🌀 [Strassen Matrix Multiplication](#-strassen-matrix-multiplication)
+4. ⚙️ [Concurrent Implementation](#-concurrent-implementation)
+    - 📊 [Concurrent Standard Matrix Multiplication](#-concurrent-standard-matrix-multiplication)
+    - 🌐 [Concurrent Strassen Matrix Multiplication](#-concurrent-strassen-matrix-multiplication)
+5. 📚 [Documentation](#-documentation)
+6. 📦 [Installation](#-installation)
+7. 🚀 [Usage](#-usage)
+    - 🧑‍💻 [Automatic](#-automatic)
+    - ✍️ [Manual](#-manual)
+        - 🌟 [Main](#-main)
+        - 🧪 [Tests](#-tests)
+8. 👥 [Authors](#-authors)
+9. 📄 [License](#-license)
 
 ---
 
