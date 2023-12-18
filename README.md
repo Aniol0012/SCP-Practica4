@@ -4,10 +4,10 @@
 ## Table of Contents
 1. 📝 [Description](#-description)
 2. 🧮 [Standard Matrix Multiplication](#-standard-matrix-multiplication)
-3. 🌀 [Strassen Matrix Multiplication](#-strassen-matrix-multiplication)
+3. 🌀 [Strassens Matrix Multiplication](#-strassens-matrix-multiplication)
 4. ⚙️ [Concurrent Implementation](#-concurrent-implementation)
     - 📊 [Concurrent Standard Matrix Multiplication](#-concurrent-standard-matrix-multiplication)
-    - 🌐 [Concurrent Strassen Matrix Multiplication](#-concurrent-strassen-matrix-multiplication)
+    - 🌐 [Concurrent Strassens Matrix Multiplication](#-concurrent-strassens-matrix-multiplication)
 5. 📚 [Documentation](#-documentation)
 6. 📦 [Installation](#-installation)
 7. 🚀 [Usage](#-usage)
@@ -23,7 +23,7 @@
 ## 📝 Description
 
 This project, part of the *Sistemes Concurrents i Paral·lels* (SCP[^1]) subject, explores concurrent Matrix 
-Multiplication using two different methods: [standard](#standard-matrix-multiplication) and [Strassen](#strassen-matrix-multiplication).
+Multiplication using two different methods: [standard](#-standard-matrix-multiplication) and [Strassens](#-strassens-matrix-multiplication).
 The objective is to demonstrate and compare the efficiency of these methods in a concurrent computing context.
 This project is developed for the Computer Science degree at the University of Lleida ([UDL](https://udl.cat)), Spain.
 
@@ -66,23 +66,23 @@ for (i = 0; i < n; i++) {
 > Check [geeksforgeeks](https://www.geeksforgeeks.org/c-program-multiply-two-matrices/) for more information about standard matrix multiplication
 
 
-## 🌀 Strassen Matrix Multiplication
+## 🌀 Strassens Matrix Multiplication
 
-The Strassen method is an advanced algorithm that divides the matrices into smaller ones, reducing the number of multiplicative operations, thus potentially improving performance on large matrices.
+The Strassens method is an advanced algorithm that divides the matrices into smaller ones, reducing the number of multiplicative operations, thus potentially improving performance on large matrices.
 A visual example of this is shown below:
 
 ![strassen_new](https://github.com/Aniol0012/SCP-Practica4/assets/53788631/5abfa375-036d-4312-8a06-5eec0c11c30f)
 
 
 > [!TIP]
-> Check [geeksforgeeks](https://www.geeksforgeeks.org/strassens-matrix-multiplication/) for more information about Strassen matrix multiplication
+> Check [geeksforgeeks](https://www.geeksforgeeks.org/strassens-matrix-multiplication/) for more information about Strassens matrix multiplication
 
 ## ⚙️ Concurrent implementation
 These implementations dive us to the concurrent implementation of the algorithms.
 
 ### 📊 Concurrent Standard Matrix Multiplication
 
-This implementation is based on the [standard](#standard-matrix-multiplication) one, but with the difference that it uses
+This implementation is based on the [standard](#-standard-matrix-multiplication) one, but with the difference that it uses
 threads to compute the result. The idea is to divide the matrix into blocks and compute each block in a different thread.
 
 For this concurrent implementation it has been made from the sequential version of matrix multiplication ijk. Comparisons 
@@ -90,7 +90,13 @@ between sequential and concurrent times have been made between these two version
 
 You can check this implementation at [Standard_MultMat.c](./MultMat_Conc/Standard_MultMat.c) file.
 
-### 🌐 Concurrent Strassen Matrix Multiplication
+### 🌐 Concurrent Strassens Matrix Multiplication
+
+This implementation is based on the [Strassens](#-strassen-matrix-multiplication) one, but with the difference that it uses
+threads to compute the result. The idea is to divide the matrix into blocks (mx) and compute each block in a different thread.
+This program uses recursive calls to the function *calculate_mx()* to compute the result taking advantage of [Divide and Conquer](https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm) strategy.
+
+You can check this implementation at [Strassens_MultMat.c](./MultMat_Conc/Strassens_MultMat.c) file.
 
 A conceptual function calling can be shown like this:
 
