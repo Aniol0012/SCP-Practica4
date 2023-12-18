@@ -2,7 +2,7 @@
 
 ## Description
 
-This project, part of the *Sistemes Concurrents i Paral·lels* ([SCP](#note)[^1]) subject, explores concurrent Matrix 
+This project, part of the *Sistemes Concurrents i Paral·lels* (SCP[^1]) subject, explores concurrent Matrix 
 Multiplication using two different methods: [standard](#standard-matrix-multiplication) and [strassen](#strassen-matrix-multiplication).
 The objective is to demonstrate and compare the efficiency of these methods in a concurrent computing context.
 This project is developed for the Computer Science degree at the University of Lleida ([UDL](https://udl.cat)), Spain.
