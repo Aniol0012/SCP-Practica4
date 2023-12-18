@@ -17,7 +17,7 @@ since is necessary to nest three loops to iterate over the three dimensions of t
 
 A visual example of the standard matrix multiplication is shown below:
 
-
+![bad3a8b38db64a918543146979adcea0](https://github.com/Aniol0012/SCP-Practica4/assets/53788631/6077d953-70de-4888-86b1-2180ddf95774)
 
 There are to approaches to implement this method, ijk and ikj. The first one is the most common and the second one is
 the most efficient one. The reason is that the first one is not cache friendly, since it iterates over the rows of the
@@ -66,6 +66,7 @@ git clone https://github.com/Aniol0012/SCP-Practica4.git
 ### Automatic
 Just open the project with [CLion](https://www.jetbrains.com/clion/) and run it. You can change parameters as shown below:
 
+![Screenshot_1](https://github.com/Aniol0012/SCP-Practica4/assets/53788631/ded2b73b-9161-45bd-9baf-72593cb3dc42)
 
 ### Manual
 
