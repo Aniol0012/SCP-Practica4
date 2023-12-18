@@ -8,8 +8,8 @@ The objective is to demonstrate and compare the efficiency of these methods in a
 This project is developed for the Computer Science degree at the University of Lleida ([UDL](https://udl.cat)), Spain.
 
 
-> [!NOTE]
-> [^1]: **SCP** Stands for *Sistemes Concurrents i Paral·lels* (Concurrent and Parallel Systems) which is the Catalan name for the subject.
+
+[^1]: **SCP** Stands for *Sistemes Concurrents i Paral·lels* (Concurrent and Parallel Systems) which is the Catalan name for the subject.
 
 ## Standard Matrix Multiplication
 
