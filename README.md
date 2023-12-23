@@ -22,7 +22,7 @@
 
 ## 📝 Description
 
-This project, part of the *Sistemes Concurrents i Paral·lels* (SCP[^1]) subject, explores concurrent Matrix 
+This project, part of the SCP[^1] subject, explores concurrent Matrix 
 Multiplication using two different methods: [standard](#-standard-matrix-multiplication) and [Strassens](#-strassens-matrix-multiplication).
 The objective is to demonstrate and compare the efficiency of these methods in a concurrent computing context.
 This project is developed for the Computer Science degree at the University of Lleida ([UDL](https://udl.cat)), Spain.
@@ -47,7 +47,7 @@ approach is more cache friendly, since it iterates over the rows of the first ma
 matrix and finally over the columns of the second matrix. This means that the elements of the first matrix are stored in
 the cache, since the iteration is sequential.
 
-**ijk** matrix multiplication should look like this:
+The **ikj** matrix multiplication should look like this:
 
 ```c
 int A[n][n], B[n][n], C[n][n];
